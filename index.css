@@ -1,0 +1,358 @@
+/* Font declarations */
+@font-face {
+    font-family: 'Kollektif';
+    src: url('public/fonts/Kollektif.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kollektif';
+    src: url('public/fonts/Kollektif-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Kollektif';
+    src: url('public/fonts/Kollektif-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Kollektif';
+    src: url('public/fonts/Kollektif-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('public/fonts/Sofia Pro Medium Az.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('public/fonts/Sofia Pro Medium Italic Az.otf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('public/fonts/Sofia Pro Bold Az.otf Az.otf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('public/fonts/Sofia Pro Bold Italic Az.otf Az.otf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+/* #101030 'black' (background colour) */ 
+/* #FFF8F0 'white' (font colour) */ 
+/* #E03010 'red' (primary colour) */ 
+/* #FFC040 'yellow' (secondary colour) */ 
+/* #80B0B0 'teal' (tertiary colour) */ 
+
+/* Examples of using different font weights and styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth
+
+}
+
+body {
+    font-family: 'Sofia Pro', sans-serif;
+    line-height: 1.6;
+    color: #FFF8F0; 
+    background-color: #101030; /* background colour */ 
+}
+
+
+h1, h2, h3, a {
+    font-family: 'Kollektif';
+    font-weight: bold;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+#navbar {
+    opacity:0;
+    display:flex;
+    position: fixed;
+    flex-direction: row;
+    width: 100%;
+    height: clamp(60px, 20vw, 80px);
+    z-index: 4;
+    padding: 16px;
+    justify-content: space-between;
+    align-items: center;
+    outline-offset: 8px;
+    outline: '0px solid #101030';
+    transition: outline 0.1s;
+}
+
+.hamburger {
+    display:none;
+    cursor:pointer;
+    height:24px;
+    aspect-ratio: 1/1;
+    image-rendering: pixelated;  /* For modern browsers */
+    image-rendering: -moz-crisp-edges;    /* Firefox */
+    image-rendering: crisp-edges; /* Safari */
+    -ms-interpolation-mode: nearest-neighbor;  /* IE (old) */
+    border-bottom: solid 0px #FFF8F0;
+    transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
+}
+
+.hamburger:hover {
+    border-bottom: solid 3px #FFF8F0;
+    transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
+
+}
+
+
+.navbar-links {
+    display: flex;
+    flex-direction: row-reverse;
+    float:right;
+    gap:16px;
+}
+
+a {
+    font-size: 90%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    color:#FFF8F0;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding-top: 8px;
+    border-bottom: solid 0px #FFF8F0;
+    transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
+}
+
+a:hover {
+    border-bottom: solid 3px #FFF8F0;
+    transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
+}
+
+#navbar-logo {
+    position:relative;
+    height: 100%;
+}
+
+#logo {
+    position:absolute;
+    height: 100%;
+    transition: opacity 0.1s;
+}
+
+#icon {
+    display:none;
+    position:absolute;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+
+.hero-padding {
+    position:relative;
+    width:100%;
+    height:100%;
+    min-height: 100vh;
+    pointer-events: none;
+}
+
+
+.hero {
+    position:fixed;
+    top:0px;
+    width:100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    /* position: relative; */
+    overflow: hidden;
+}
+
+.hero-fov {
+    position: absolute;
+    /* Set a matching height using aspect-ratio */
+    aspect-ratio: 1 / 1;
+    z-index: -1;
+    border-radius: 50%;  /* 50% creates a perfect circle */
+    overflow: hidden;
+    outline: 2px solid #FFF8F0;  /* Using your 'white' color */
+    outline-offset: 8px;  /* This creates the gap you want */
+    pointer-events: none;
+}
+
+
+.hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+}
+
+.hero-image[data-index="0"] {
+    background-image: url('public/imgs/w3_2_composite.jpg');
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.hero-image[data-index="1"] {
+    background-image: url('public/imgs/w3_2_aligned_1.jpg');
+}
+
+.hero-image[data-index="2"] {
+    background-image: url('public/imgs/w3_2_aligned_2.jpg');
+}
+
+.hero-image[data-index="3"] {
+    background-image: url('public/imgs/w3_2_aligned_3.jpg');
+}
+
+.hero-image[data-index="4"] {
+    background-image: url('public/imgs/w3_2_aligned_4.jpg');
+}
+
+.section {
+    position:relative;
+    z-index:2;
+}
+
+#services {
+    padding-top:32px;
+    background: #FFF8F0;
+    color: #101030;
+    outline: 2px solid #FFF8F0;
+    outline-offset: 8px;
+    height:max-content;
+}
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height:100%;
+}
+
+.card {
+    width:100%;
+    padding:32px;
+}
+
+.card-name {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-name img {
+    height:24px;
+}
+
+
+h3 {
+    border-bottom: solid 0px #101030;
+    transition: border-bottom-width 0.1s;  /* Specifically transition the border width */ 
+}
+
+.card:hover h3 {
+    border-bottom: solid 3px #101030;
+    transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
+}
+
+#about {
+    background: #FFF8F0;
+    padding:32px;
+    color: #101030;
+    text-align: right;
+}
+
+.footer {
+    background: var(--dark);
+    color: #FFF8F0;
+    padding: var(--spacing-lg) var(--spacing-md);
+}
+
+/* For landscape orientation (wider than tall) */
+@media (aspect-ratio > 1/1) {
+    .hero-fov {
+        height: 80%;  
+    }
+}
+
+/* For portrait orientation (taller than wide) */
+@media (aspect-ratio < 1/1) {
+    .hero-fov {
+        width: 80%;  
+    }
+}
+
+/* For portrait orientation (taller than wide) */
+@media (aspect-ratio < 3/4) {
+    .hamburger {
+        display: flex;
+    }
+
+    .hero-image {
+        display:block !important;
+        transition: opacity 0.5s !important;
+    }
+
+    .navbar-links {
+        position: fixed;
+        top: 0;
+        right: -100%;  /* Hide off-screen initially */
+        width: 100%;
+        height: 100vh;
+        background-color: #101030;  /* Your background color */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+        border-bottom: none;
+    }
+
+    .navbar-links.active {
+        right: 0;  /* Slide in when active */
+    }
+
+    .navbar-links a {
+        font-size: 24px;  /* Larger font for mobile menu */
+        margin: 20px 0;
+    }
+
+    .cards {
+        flex-direction: column;
+    }
+}
