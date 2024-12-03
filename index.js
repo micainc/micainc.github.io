@@ -139,15 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // navbar detect section overlap
-    const services = document.querySelector('#services');
+    const sections = document.querySelector('#sections');
     const navbarHeight = navbar.offsetHeight;
 
     function updateNavbar() {
-        const servicesRect = services.getBoundingClientRect();
+        const sectionsRect = sections.getBoundingClientRect();
         
-        if (servicesRect.top <= navbarHeight) { // first section overlaps navbar: 
-            navbar.style.backgroundColor= '#101030';            
-            navbar.style.outline = '3px solid #101030';
+        if (sectionsRect.top <= navbarHeight) { // first section overlaps navbar: 
+            navbar.style.backgroundColor= '#00000040';     
+            navbar.style.outline = '2px solid #FFFFFF';
 
         } else {
             navbar.style.backgroundColor= '#00000000';

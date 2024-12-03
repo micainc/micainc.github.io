@@ -29,36 +29,50 @@
 
 @font-face {
     font-family: 'Sofia Pro';
-    src: url('public/fonts/Sofia Pro Medium Az.otf') format('truetype');
-    font-weight: normal;
+    src: url('public/fonts/Sofia Pro Bold Az.otf') format('truetype');
+    font-weight: bold;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('public/fonts/Sofia Pro Bold Italic Az.otf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
 }
 
 
 @font-face {
     font-family: 'Sofia Pro';
-    src: url('public/fonts/Sofia Pro Medium Italic Az.otf') format('truetype');
-    font-weight: normal;
+    src: url('public/fonts/Sofia Pro Black Italic Az.otf') format('truetype');
+    font-weight: bolder;
     font-style: italic;
 }
 
 
 @font-face {
     font-family: 'Sofia Pro';
-    src: url('public/fonts/Sofia Pro Bold Az.otf Az.otf') format('truetype');
-    font-weight: bold;
+    src: url('public/fonts/Sofia Pro Black Az.otf') format('truetype');
+    font-weight: bolder;
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('public/fonts/Sofia Pro Regular Italic Az.otf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
 
 @font-face {
     font-family: 'Sofia Pro';
-    src: url('public/fonts/Sofia Pro Bold Italic Az.otf Az.otf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
+    src: url('public/fonts/Sofia Pro Regular Az.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
+
 /* #101030 'black' (background colour) */ 
-/* #FFF8F0 'white' (font colour) */ 
+/* #FFFFFF 'white' (font colour) */ 
 /* #E03010 'red' (primary colour) */ 
 /* #FFC040 'yellow' (secondary colour) */ 
 /* #80B0B0 'teal' (tertiary colour) */ 
@@ -70,16 +84,18 @@
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth
-
 }
 
 body {
     font-family: 'Sofia Pro', sans-serif;
-    line-height: 1.6;
-    color: #FFF8F0; 
-    background-color: #101030; /* background colour */ 
-}
+    font-weight: normal;
 
+    line-height: 1.6;
+    color: #FFFFFF; 
+    background-color: #101030; /* background colour */ 
+    right:0px;
+    left:0px;
+}
 
 h1, h2, h3, a {
     font-family: 'Kollektif';
@@ -89,6 +105,19 @@ h1, h2, h3, a {
 
 h1 {
     font-size: 32px;
+    padding-bottom: 16px;
+}
+
+img {
+    opacity:0.9;
+    cursor:pointer;
+    transition: 0.1s;
+
+}
+
+img:hover {
+    transition: 0.1s;
+    opacity:1;
 }
 
 #navbar {
@@ -102,9 +131,8 @@ h1 {
     padding: 16px;
     justify-content: space-between;
     align-items: center;
-    outline-offset: 8px;
-    outline: '0px solid #101030';
     transition: outline 0.1s, opacity 0.1s;
+    backdrop-filter: blur(16px);
 }
 
 .hamburger {
@@ -116,12 +144,12 @@ h1 {
     image-rendering: -moz-crisp-edges;    /* Firefox */
     image-rendering: crisp-edges; /* Safari */
     -ms-interpolation-mode: nearest-neighbor;  /* IE (old) */
-    border-bottom: solid 0px #FFF8F0;
+    border-bottom: solid 0px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
 }
 
 .hamburger:hover {
-    border-bottom: solid 3px #FFF8F0;
+    border-bottom: solid 3px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
 
 }
@@ -129,27 +157,25 @@ h1 {
 
 .navbar-links {
     display: flex;
-    flex-direction: row-reverse;
     float:right;
     gap:16px;
 }
 
 a {
-    font-size: 90%;
     display: flex;
     justify-content: center;
     align-content: center;
     text-align: center;
-    color:#FFF8F0;
+    color:#FFFFFF;
     flex-direction: column;
     box-sizing: border-box;
     padding-top: 8px;
-    border-bottom: solid 0px #FFF8F0;
+    border-bottom: solid 0px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
 }
 
 a:hover {
-    border-bottom: solid 3px #FFF8F0;
+    border-bottom: solid 3px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
 }
 
@@ -193,6 +219,7 @@ a:hover {
     color: white;
     /* position: relative; */
     overflow: hidden;
+    background-color: #101030;
 }
 
 .hero-fov {
@@ -202,7 +229,7 @@ a:hover {
     z-index: -1;
     border-radius: 50%;  /* 50% creates a perfect circle */
     overflow: hidden;
-    outline: 2px solid #FFF8F0;  /* Using your 'white' color */
+    outline: 2px solid #FFFFFF;  /* Using your 'white' color */
     outline-offset: 8px;  /* This creates the gap you want */
     pointer-events: none;
 }
@@ -242,30 +269,87 @@ a:hover {
     background-image: url('public/imgs/w3_2_aligned_4.jpg');
 }
 
+#sections {
+    margin:auto;
+    background-color: #00000060;
+    backdrop-filter:blur(16px);
+    border-top: 2px solid #FFFFFF;
+    padding:32px;
+    color:#FFFFFF;
+    font-size:24px;
+}
+
 .section {
     position:relative;
     z-index:2;
+    background-color: #FFFFFF00;
+    height:max-content;
+    /* width:80%; */
+    padding:32px;
+
+    scroll-margin-top: 64px;
+    opacity:0.9;
+    transition: 0.1s;
 }
 
-#services {
-    padding-top:32px;
-    background: #FFF8F0;
-    color: #101030;
-    outline: 2px solid #FFF8F0;
-    outline-offset: 8px;
-    height:max-content;
+.section:hover {
+    opacity:1;
+    transition: 0.1s;
 }
+
+.highlight {
+    transition: 1s;
+}
+
+.highlight-container:hover > .highlight {
+    transition: 1s;
+    color: #E03010; 
+
+}
+
+#clients {
+    margin-top:32px;
+    margin-bottom:32px;
+    border-top:2px solid #FFFFFF;
+    border-bottom:2px solid #FFFFFF;
+
+}
+
+.carousel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap:16px;
+    overflow-x:hidden;
+    justify-content: space-around;
+}
+.carousel img {
+    max-height:5vh;
+
+}
+
+
+/* #services {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 8px;
+} */
 
 .cards {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height:100%;
+    gap:64px;
 }
 
 .card {
     width:100%;
-    padding:32px;
+    opacity:0.9;
+    transition: 0.1s;
+}
+
+.card:hover {
+    opacity:1;
+    transition: 0.1s;
 }
 
 .card-name {
@@ -280,29 +364,52 @@ a:hover {
     height:24px;
 }
 
-
 h3 {
-    border-bottom: solid 0px #101030;
+    border-bottom: solid 0px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */ 
 }
 
 .card:hover h3 {
-    border-bottom: solid 3px #101030;
+    border-bottom: solid 3px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
 }
 
-#about {
-    background: #FFF8F0;
-    padding:32px;
-    color: #101030;
-    text-align: right;
+#profiles {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap:32px;
+}
+
+.profile {
+    display:flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    opacity:0.9;
+    transition: 0.1s;
+}
+
+.profile:hover {
+    opacity:1;
+    transition: 0.1s;
+}
+
+.profile-role {
+    font-weight: bolder;
+}
+
+.profile-tasks {
+    font-size: 18px;
 }
 
 .footer {
     background: var(--dark);
-    color: #FFF8F0;
+    color: #FFFFFF;
     padding: var(--spacing-lg) var(--spacing-md);
 }
+
 
 /* For landscape orientation (wider than tall) */
 @media (aspect-ratio > 1/1) {
@@ -355,4 +462,24 @@ h3 {
     .cards {
         flex-direction: column;
     }
+
+    #profiles {
+        flex-direction: column;
+
+    }
+
+    .profile-name {
+        font-weight: bolder;
+        font-size:20px;
+    
+    }
+    
+    .profile-role {
+        font-size:16px;
+    }
+
+    .profile-tasks {
+        font-size:14px;
+    }
+    
 }
