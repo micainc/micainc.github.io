@@ -140,7 +140,7 @@ img:hover {
     justify-content: space-between;
     align-items: center;
     transition: outline 0.1s, opacity 0.1s;
-    backdrop-filter: blur(16px);
+    /* backdrop-filter: blur(16px); */
 }
 
 .hamburger {
