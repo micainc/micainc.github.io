@@ -146,16 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const sectionsRect = sections.getBoundingClientRect();
         
         if (sectionsRect.top <= navbarHeight) { // first section overlaps navbar: 
-            navbar.style.backdropFilter= 'blur(16px)';
-
-            navbar.style.backgroundColor= '#00000040';     
             navbar.style.outline = '2px solid #FFFFFF';
+            navbar.style.backdropFilter= 'blur(16px)';
+            navbar.style.backgroundColor= '#00000040';     
 
         } else {
+            navbar.style.outline = '0px solid #FFFFFF';
             navbar.style.backdropFilter= 'none';
             navbar.style.backgroundColor= '#00000000';
-            navbar.style.outline = '0px solid #101030';
-
         }
     }
 
