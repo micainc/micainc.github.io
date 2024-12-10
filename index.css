@@ -288,7 +288,6 @@ a:hover {
     background-color: #00000060;
     backdrop-filter:blur(16px);
     border-top: 2px solid #FFFFFF;
-    padding:32px;
     color:#FFFFFF;
     font-size:24px;
     width:100%;
@@ -300,12 +299,11 @@ a:hover {
     background-color: #FFFFFF00;
     height:max-content;
     /* width:80%; */
-    padding:32px;
-    padding-bottom:96px;
+    padding:64px;
     scroll-margin-top: 64px;
     opacity:0.9;
     transition: 0.1s;
-    /* border-bottom:2px solid #FFFFFF; */
+    border-bottom:2px solid #FFFFFF;
 
 }
 
@@ -427,22 +425,20 @@ h3 {
     border-bottom: none;
 }
 
-.samples-container {
-    /* background-color: #FFFFFF32; */
-    /* border:1px solid #FFFFFF; */
-    margin:auto;
-}
-
 .samples {
     display:flex;
     justify-content: center;
     align-items: center;
     margin:auto;
+    gap:16px;
 }
 
 .samples img {
     outline: 1px solid #FFFFFF;
+    object-fit: cover;
     min-width: 1vw;
+    aspect-ratio: 1/1;
+    overflow: hidden;
 }
 
 .samples.mobile {
@@ -494,10 +490,11 @@ h3 {
     }
 
     #sections {
-        padding:0px;
         font-size: 14px;
     }
-    
+    .section {
+        padding:32px;
+    }
     .hamburger {
         display: flex;
     }
