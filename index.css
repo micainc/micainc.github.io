@@ -242,6 +242,7 @@ a:hover {
 
 .hero-fov {
     position: absolute;
+    width:80%;
     /* Set a matching height using aspect-ratio */
     aspect-ratio: 1 / 1;
     z-index: -1;
@@ -471,23 +472,30 @@ h3 {
 }
 
 /* For landscape orientation (wider than tall) */
-@media (aspect-ratio > 1/1) {
+/* width:auto;  VERY IMPORTANT LINE!!! */ 
+/* @media (aspect-ratio > 1/1) {
     .hero-fov {
         height: 80%;  
-        width:auto;
+        width:auto; 
     }
-}
+} */
 
 /* For portrait orientation (taller than wide) */
-@media (aspect-ratio < 1/1) {
+/* height:auto;  VERY IMPORTANT LINE!!! */ 
+
+/* @media (aspect-ratio < 1/1) {
     .hero-fov {
         width: 80%;  
         height:auto;
     }
-} 
+}  */
 
 /* For portrait orientation (taller than wide) */
-@media (aspect-ratio < 3/4) {
+/* right: -100%;   Hide off-screen initially */
+/* right: 0;  Slide in when active */
+ /*font-size: 24px;  Larger font for mobile menu */
+
+/* @media (aspect-ratio < 3/4) {
 
     h1 {
         font-size: 24px;
@@ -524,10 +532,10 @@ h3 {
     .navbar-links {
         position: fixed;
         top: 0;
-        right: -100%;  /* Hide off-screen initially */
+        right: -100%; 
         width: 100%;
         height: 100vh;
-        background-color: #101030;  /* Your background color */
+        background-color: #101030; 
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -536,11 +544,11 @@ h3 {
     }
 
     .navbar-links.active {
-        right: 0;  /* Slide in when active */
+        right: 0; 
     }
 
     .navbar-links a {
-        font-size: 24px;  /* Larger font for mobile menu */
+        font-size: 24px; 
         margin: 20px 0;
     }
 
@@ -567,4 +575,81 @@ h3 {
         font-size:14px;
     }
     
+} */
+
+/* For tablets and larger phones (landscape) */
+@media screen and (min-width: 768px) {
+    .hero-fov {
+        height: 80%;
+        width: auto;
+    }
 }
+
+/* For mobile devices */
+@media screen and (max-width: 767px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    #sections {
+        font-size: 14px;
+    }
+
+    .section {
+        padding: 32px;
+    }
+
+    .hamburger {
+        display: flex !important;
+    }
+
+    .hero-image {
+        display: block !important;
+        transition: opacity 0.5s !important;
+    }
+
+    .samples.mobile {
+        display: flex !important;
+    }
+
+    .samples.desktop {
+        display: none !important;
+    }
+
+    .cards {
+        flex-direction: column !important;
+    }
+
+    .profiles-section {
+        flex-direction: column !important;
+    }
+
+    /* Add specificity to ensure these styles are applied */
+    .navbar-links {
+        display: none;  /* Hide by default on mobile */
+    }
+
+    .navbar-links.active {
+        display: flex;  /* Show when active */
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: #101030;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 3;
+    }
+
+    .navbar-links a {
+        font-size: 24px;
+        margin: 20px 0;
+    }
+}
+
