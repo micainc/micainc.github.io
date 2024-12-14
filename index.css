@@ -142,6 +142,7 @@ img:hover {
     outline: '0px solid #FFFFFF';
     /* outline: 2px solid #101030; */
     backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
     transition: 0.1s, opacity 1s;
 
 }
@@ -245,9 +246,11 @@ a:hover {
     aspect-ratio: 1 / 1;
     z-index: -1;
     border-radius: 50%;  /* 50% creates a perfect circle */
+    -webkit-border-radius: 50%;
     overflow: hidden;
-    outline: 2px solid #FFFFFF;  /* Using your 'white' color */
-    outline-offset: 8px;  /* This creates the gap you want */
+    box-shadow: 0 0 0 8px #101030, 0 0 0 10px #FFFFFF;
+    /* outline: 2px solid #FFFFFF;  
+    outline-offset: 8px;   */
     pointer-events: none;
 }
 
@@ -265,31 +268,32 @@ a:hover {
 }
 
 .hero-image[data-index="0"] {
-    background-image: url('public/imgs/w3_2_composite.jpg');
+    background-image: url('./public/imgs/w3_2_composite.jpg');
     opacity: 0;
     transition: 0.5s;
 }
 
 .hero-image[data-index="1"] {
-    background-image: url('public/imgs/w3_2_aligned_cp_1.jpg');
+    background-image: url('./public/imgs/w3_2_aligned_cp_1.jpg');
 }
 
 .hero-image[data-index="2"] {
-    background-image: url('public/imgs/w3_2_aligned_cp_2.jpg');
+    background-image: url('./public/imgs/w3_2_aligned_cp_2.jpg');
 }
 
 .hero-image[data-index="3"] {
-    background-image: url('public/imgs/w3_2_aligned_cp_3.jpg');
+    background-image: url('./public/imgs/w3_2_aligned_cp_3.jpg');
 }
 
 .hero-image[data-index="4"] {
-    background-image: url('public/imgs/w3_2_aligned_cp_4.jpg');
+    background-image: url('./public/imgs/w3_2_aligned_cp_4.jpg');
 }
 
 #sections {
     margin:auto;
     background-color: #00000060;
     backdrop-filter:blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-top: 2px solid #FFFFFF;
     color:#FFFFFF;
     font-size:24px;
@@ -470,6 +474,7 @@ h3 {
 @media (aspect-ratio > 1/1) {
     .hero-fov {
         height: 80%;  
+        width:auto;
     }
 }
 
@@ -477,8 +482,9 @@ h3 {
 @media (aspect-ratio < 1/1) {
     .hero-fov {
         width: 80%;  
+        height:auto;
     }
-}
+} 
 
 /* For portrait orientation (taller than wide) */
 @media (aspect-ratio < 3/4) {
