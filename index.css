@@ -404,8 +404,8 @@ h3 {
     display:flex;
     position: relative;
     flex-direction: column;
-    justify-content: start;
-    align-items: start;
+    justify-content: center;
+    align-items: center;
     opacity:0.9;
     transition: 0.1s;
 }
@@ -415,12 +415,37 @@ h3 {
     transition: 0.1s;
 }
 
+.profile-name {
+    font-size:18px;
+    text-align: center;
+}
+
 .profile-role {
     font-weight: bolder;
 }
 
+.profile-credentials {
+    font-size: 16px;
+    text-align: center;
+    font-style: italic;
+    font-weight: lighter;
+}
+
 .profile-tasks {
-    font-size: 18px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.profile img {
+    width:50%;
+    border-radius: 100%;
+    border: 2px solid #FFFFFF;
+    aspect-ratio: 1/1;
+    margin: 32px 0px;
+}
+
+.hidden {
+    visibility: hidden;
 }
 
 .footer {
@@ -599,6 +624,14 @@ h3 {
         font-size: 14px;
     }
 
+
+
+    .profile * {
+        font-size: 12px;
+    }
+    .profile-name {
+        font-size: 14px;
+    }
     .section {
         padding: 32px;
     }
