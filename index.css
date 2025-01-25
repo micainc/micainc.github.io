@@ -71,14 +71,6 @@
     font-style: normal;
 }
 
-/* Also ensure the body and html have full height */
-html, body {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    margin: 0;
-    padding: 0;
-}
-
 /* #101030 'black' (background colour) */ 
 /* #FFFFFF 'white' (font colour) */ 
 /* #E03010 'red' (primary colour) */ 
@@ -238,11 +230,7 @@ a:hover {
     position:fixed;
     top:0px;
     width:100%;
-
-    height: 100vh; /* fallback */
-    height: -webkit-fill-available;
-    height: 100dvh; /* dynamic viewport height - modern browsers */
-    
+    height:100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -256,11 +244,7 @@ a:hover {
 .hero-matrix {
     font-family: "Roboto Mono", monospace;
     width:100%;
-
-    height: 100vh; /* fallback */
-    height: -webkit-fill-available;
-    height: 100dvh; /* dynamic viewport height - modern browsers */
-    
+    height:100%;
     z-index: -1;
     opacity:0.25;
     color: #000000;

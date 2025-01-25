@@ -207,7 +207,7 @@ function initMatrix() {
     console.log('Actual width used:', Math.floor(matrix.offsetWidth / charWidth) * charWidth);
 
     const width = Math.ceil(matrix.offsetWidth / charWidth); // use 'ceil' to go one character over the max visible width
-    const height = Math.floor(matrix.offsetHeight / charWidth);
+    const height = Math.ceil(matrix.offsetHeight / charWidth) + 1;
     console.log("WIDTH: ", width)
     console.log("HEIGHT: ", height)
 
