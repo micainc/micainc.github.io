@@ -230,7 +230,11 @@ a:hover {
     position:fixed;
     top:0px;
     width:100%;
-    height:100%;
+
+    height: 100vh; /* fallback */
+    height: -webkit-fill-available;
+    height: 100dvh; /* dynamic viewport height - modern browsers */
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -244,7 +248,11 @@ a:hover {
 .hero-matrix {
     font-family: "Roboto Mono", monospace;
     width:100%;
-    height:100%;
+
+    height: 100vh; /* fallback */
+    height: -webkit-fill-available;
+    height: 100dvh; /* dynamic viewport height - modern browsers */
+    
     z-index: -1;
     opacity:0.25;
     color: #000000;
@@ -253,7 +261,10 @@ a:hover {
     font-weight: bolder;
     box-sizing: border-box;
     overflow: hidden;
-
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
 }
 
 
@@ -309,6 +320,7 @@ a:hover {
 }
 
 #sections {
+    position: relative;  /* needed for absolute positioning of pseudo-element */
     margin:auto;
     background-color: #00000060;
     backdrop-filter:blur(16px);
@@ -317,7 +329,16 @@ a:hover {
     color:#FFFFFF;
     font-size:24px;
     width:100%;
+    /* bottom: 16px; */
+    transition:0.1s;
 }
+
+#sections:hover {
+    border-top: 4px solid #FFFFFF;
+    transition:0.1s;
+
+}
+
 
 .section {
     position:relative;
@@ -412,7 +433,9 @@ h3 {
 }
 
 .profiles-section {
-    display:flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    width:100%;
     flex-direction: row;
     justify-content: space-around;
     gap:32px;
@@ -422,7 +445,7 @@ h3 {
     display:flex;
     position: relative;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start; /* keep our imgs floating at the top */
     align-items: center;
     opacity:0.9;
     transition: 0.1s;

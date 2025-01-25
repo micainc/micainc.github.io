@@ -176,6 +176,7 @@ function initMatrix() {
     }
 
     const matrix = document.querySelector('.hero-matrix');
+    matrix.style.fontSize = '36px';
     matrix.style.visibility = 'visible';
 
     const testSpan = document.createElement('span');
@@ -185,9 +186,10 @@ function initMatrix() {
     left: 0;
     font-family: "Roboto Mono", monospace;
     font-weight: bolder;
+    font-size: 36px;
+
     `;
 
-    // font-size: 12px;
     //background-color: red;  // Makes it visible for testing
     //color: black;
 
@@ -204,7 +206,7 @@ function initMatrix() {
     console.log('Characters per row:', Math.floor(matrix.offsetWidth / charWidth));
     console.log('Actual width used:', Math.floor(matrix.offsetWidth / charWidth) * charWidth);
 
-    const width = Math.floor(matrix.offsetWidth / charWidth);
+    const width = Math.ceil(matrix.offsetWidth / charWidth); // use 'ceil' to go one character over the max visible width
     const height = Math.floor(matrix.offsetHeight / charWidth);
     console.log("WIDTH: ", width)
     console.log("HEIGHT: ", height)
@@ -220,7 +222,8 @@ function initMatrix() {
 
     // const charSequence = ['\u00A0', '·', '▪', '▄', '▀', '■', '█'];
     // const charSequence = ['\u00A0', '\u00A0', '·', '▪', '▄', '▀', '■', '█', '█'];
-    const charSequence = ['\u00A0', '\u00A0', '·', '▪', '■', '■'];
+    const charSequence = ['\u00A0', '\u00A0', '·', '▪', '■', '■']; // 
+
     const charLevels = new Map(charSequence.map((char, i) => [char, i]));
     const maxLevel = charSequence.length - 1;
 
@@ -284,10 +287,12 @@ function initMatrix() {
             return;
         }
         
-        if(Math.random()<0.5) {
+        if(Math.random()<0.875) {
             newGrid[idx] = currLvl;
             return;
         }
+
+        const verticalPosition = row / (height - 1);
 
         // Get neighbor levels
         let sum = currLvl;
@@ -314,15 +319,30 @@ function initMatrix() {
             count++;
         }
 
-        // Calculate new level
-        const avgLevel = Math.round(sum / count + (Math.random() * 2 - 1));
-        if(avgLevel > currLvl && currLvl < maxLevel) {
+        const avgLevel = sum / count;
+    
+        // Combine vertical position with neighbor average
+        const bias = verticalPosition - 0.5; // -1 at top, 0 at middle, 1 at bottom
+        const influence = avgLevel + (Math.random() * 2 - 1) + bias/2;
+        
+        if(influence > currLvl && currLvl < maxLevel) {
             newGrid[idx] = currLvl + 1;
-        } else if(avgLevel < currLvl && currLvl > 0) {
+        } else if(influence < currLvl && currLvl > 0) {
             newGrid[idx] = currLvl - 1;
         } else {
             newGrid[idx] = currLvl;
         }
+
+
+        // // Calculate new level
+        // const avgLevel = Math.round(sum / count + (Math.random() * 2 - 1));
+        // if(avgLevel > currLvl && currLvl < maxLevel) {
+        //     newGrid[idx] = currLvl + 1;
+        // } else if(avgLevel < currLvl && currLvl > 0) {
+        //     newGrid[idx] = currLvl - 1;
+        // } else {
+        //     newGrid[idx] = currLvl;
+        // }
     }
 
     function updateMatrix() {
