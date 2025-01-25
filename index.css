@@ -235,10 +235,28 @@ a:hover {
     align-items: center;
     justify-content: center;
     color: white;
+    
     /* position: relative; */
     overflow: hidden;
     background-color: #101030;
 }
+
+.hero-matrix {
+    font-family: "Roboto Mono", monospace;
+    width:100%;
+    height:100%;
+    z-index: -1;
+    opacity:0.25;
+    color: #000000;
+    letter-spacing: 0;
+    word-spacing: 0;
+    font-weight: bolder;
+    box-sizing: border-box;
+    overflow: hidden;
+
+}
+
+
 
 .hero-fov {
     position: absolute;
@@ -495,6 +513,18 @@ h3 {
     color: #E03010; 
 
 }
+
+.email-link:hover {
+    transition: 0.1s;
+    border-bottom: 3px solid #E03010 !important;
+}
+
+.email-link {
+    transition: 0.1s;
+    border-bottom: 0px solid #E03010 !important;
+}
+
+
 
 /* For landscape orientation (wider than tall) */
 /* width:auto;  VERY IMPORTANT LINE!!! */ 
