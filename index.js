@@ -364,13 +364,18 @@ function initMatrix() {
   
 document.addEventListener('DOMContentLoaded', initMatrix);
 
-window.addEventListener('resize', () => {
-    // Hide matrix during resize
-    const matrix = document.querySelector('.hero-matrix');
-    matrix.style.visibility = 'hidden';
+// Check if device is desktop (not touch-based)
+const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-        initMatrix();
-    }, 250);
-});
+// Only add resize listener if on desktop
+if (isDesktop) {
+    window.addEventListener('resize', () => {
+        const matrix = document.querySelector('.hero-matrix');
+        matrix.style.visibility = 'hidden';
+
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            initMatrix();
+        }, 250);
+    });
+}
