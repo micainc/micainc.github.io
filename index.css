@@ -71,6 +71,14 @@
     font-style: normal;
 }
 
+/* Also ensure the body and html have full height */
+html, body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    margin: 0;
+    padding: 0;
+}
+
 /* #101030 'black' (background colour) */ 
 /* #FFFFFF 'white' (font colour) */ 
 /* #E03010 'red' (primary colour) */ 
