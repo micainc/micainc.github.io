@@ -380,12 +380,6 @@ a:hover {
 
 }
 
-
-/* #services {
-    outline: 2px solid #FFFFFF;
-    outline-offset: 8px;
-} */
-
 .cards {
     display: flex;
     flex-direction: row;
@@ -490,8 +484,15 @@ h3 {
 }
 
 #about {
+    /* background-color: #FFFFFF;
+    color:#101030; */
     border-bottom: none;
 }
+
+/* #samples {
+    background-color: #FFFFFF;
+    color:#101030;
+} */
 
 .samples {
     display:flex;
@@ -514,11 +515,13 @@ h3 {
 }
 
 #contact {
+    background-color: #FFFFFF;
+    color:#101030;
     word-wrap:break-word;
 }
 
 #contact a {
-    color:#FFFFFF;
+    color:#101030;
     transition: 0.5s;
     border-bottom: none;
 
