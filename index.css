@@ -141,8 +141,11 @@ img:hover {
     align-items: center;
     outline: '0px solid #FFFFFF';
     /* outline: 2px solid #101030; */
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    /* backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px); */
     transition: 0.1s, opacity 1s;
 
 }
@@ -610,6 +613,7 @@ h3 {
         justify-content: center;
         align-items: center;
         z-index: 3;
+        opacity: 1;
     }
 
     .navbar-links a {
