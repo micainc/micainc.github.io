@@ -143,9 +143,6 @@ img:hover {
     /* outline: 2px solid #101030; */
     backdrop-filter:blur(16px);
     -webkit-backdrop-filter: blur(16px);
-
-    /* backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px); */
     transition: 0.1s, opacity 1s;
 
 }

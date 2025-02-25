@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let samplesSection = document.getElementById('samples-container');
     const sampleImages = samplesSection.querySelectorAll('img');
     const numImages = sampleImages.length;
-    const imgWidth = sampleImages[0].naturalWidth
+    let imgWidth = sampleImages[0].naturalWidth
     let windowWidth = (samplesSection.clientWidth/numImages);
     let widthScaleFactor = samplesSection.clientWidth/imgWidth
     
@@ -310,6 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(sampleImages);
 
     function updateLayout() {
+        imgWidth = sampleImages[0].naturalWidth
+        console.log("UPDATING SAMPLES LAYOUT!")
         windowWidth = samplesSection.clientWidth/numImages
         console.log("WINDOW WIDTH: ", windowWidth)
         widthScaleFactor = samplesSection.clientWidth/imgWidth
@@ -328,8 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
             initPos += windowWidth;
     
         })
-
-
     }
 
     function handleHover(e) {
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', updateLayout);
     samplesSection.addEventListener('mouseover', handleHover);
     samplesSection.addEventListener('mouseleave', updateLayout);
-    updateLayout();
+    // updateLayout();
 
 });
 
