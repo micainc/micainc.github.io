@@ -316,35 +316,29 @@ a:hover {
 #sections {
     position: relative;  /* needed for absolute positioning of pseudo-element */
     margin:auto;
-    background-color: #00000060;
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border-top: 2px solid #FFFFFF;
-    color:#FFFFFF;
+    color:#101030;
     font-size:24px;
     width:100%;
     /* bottom: 16px; */
     transition:0.1s;
+    outline: 2px solid #FFFFFF;
+    outline-offset: 8px;
 }
-
-#sections:hover {
-    border-top: 4px solid #FFFFFF;
-    transition:0.1s;
-
-}
-
 
 .section {
     position:relative;
     z-index:2;
-    background-color: #FFFFFF00;
+    background-color: #FFFFFF;
+    /* background-color: #FFFFFF00; */
+
     height:max-content;
     /* width:80%; */
     padding:64px;
     scroll-margin-top: 64px;
-    opacity:0.9;
+    opacity:1;
     transition: 0.1s;
-    border-bottom:2px solid #FFFFFF;
+    /* border-bottom:4px solid #101030; */
 
 }
 
@@ -408,6 +402,7 @@ a:hover {
 
 .card-name img {
     height:24px;
+    filter: brightness(0) saturate(100%) invert(3%) sepia(19%) saturate(1500%) hue-rotate(220deg) brightness(10%) contrast(104%);
 }
 
 h3 {
@@ -418,6 +413,13 @@ h3 {
 .card:hover h3 {
     border-bottom: solid 3px #FFFFFF;
     transition: border-bottom-width 0.1s;  /* Specifically transition the border width */
+}
+
+#team {
+    background-color: #00000060; 
+    color: #FFFFFF;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .profiles-section {
@@ -483,35 +485,22 @@ h3 {
     padding: var(--spacing-lg) var(--spacing-md);
 }
 
-#about {
-    /* background-color: #FFFFFF;
-    color:#101030; */
-    border-bottom: none;
-}
 
-/* #samples {
-    background-color: #FFFFFF;
-    color:#101030;
-} */
-
-.samples {
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin:auto;
-    gap:16px;
-}
-
-.samples img {
-    outline: 1px solid #FFFFFF;
-    object-fit: cover;
-    min-width: 1vw;
-    aspect-ratio: 1/1;
+#samples {
+    /* width:100%; */
+    margin:0px;
+    padding:0px;
+    height:512px;
+    opacity: 1;
     overflow: hidden;
 }
 
-.samples.mobile {
-    display:none;
+#samples img {
+    position:absolute;
+    opacity:1;
+    width:100%;
+    overflow:hidden;
+    background-size:contain;
 }
 
 #contact {
@@ -545,115 +534,8 @@ h3 {
 }
 
 
-
-/* For landscape orientation (wider than tall) */
-/* width:auto;  VERY IMPORTANT LINE!!! */ 
-/* @media (aspect-ratio > 1/1) {
-    .hero-fov {
-        height: 80%;  
-        width:auto; 
-    }
-} */
-
-/* For portrait orientation (taller than wide) */
-/* height:auto;  VERY IMPORTANT LINE!!! */ 
-
-/* @media (aspect-ratio < 1/1) {
-    .hero-fov {
-        width: 80%;  
-        height:auto;
-    }
-}  */
-
-/* For portrait orientation (taller than wide) */
-/* right: -100%;   Hide off-screen initially */
-/* right: 0;  Slide in when active */
- /*font-size: 24px;  Larger font for mobile menu */
-
-/* @media (aspect-ratio < 3/4) {
-
-    h1 {
-        font-size: 24px;
-    }
-
-    h3 {
-        font-size: 16px;
-
-    }
-
-    #sections {
-        font-size: 14px;
-    }
-    .section {
-        padding:32px;
-    }
-    .hamburger {
-        display: flex;
-    }
-
-    .hero-image {
-        display:block !important;
-        transition: opacity 0.5s !important;
-    }
-
-    .samples.mobile {
-        display:flex;
-    }
-
-    .samples.desktop {
-        display:none;
-    }
-
-    .navbar-links {
-        position: fixed;
-        top: 0;
-        right: -100%; 
-        width: 100%;
-        height: 100vh;
-        background-color: #101030; 
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: right 0.3s ease;
-        border-bottom: none;
-    }
-
-    .navbar-links.active {
-        right: 0; 
-    }
-
-    .navbar-links a {
-        font-size: 24px; 
-        margin: 20px 0;
-    }
-
-    .cards {
-        flex-direction: column;
-    }
-
-    .profiles-section {
-        flex-direction: column;
-
-    }
-
-    .profile-name {
-        font-size:16px;
-    
-    }
-    
-    .profile-role {
-        font-weight: bolder;
-        font-size:16px;
-    }
-
-    .profile-tasks {
-        font-size:14px;
-    }
-    
-} */
-
 /* For tablets and larger phones (landscape) */
-@media screen and (min-width: 768px) {
+@media screen and (aspect-ratio > 1/1) {
     .hero-fov {
         height: 80%;
         width: auto;
@@ -661,7 +543,7 @@ h3 {
 }
 
 /* For mobile devices */
-@media screen and (max-width: 767px) {
+@media screen and (aspect-ratio < 1/1) {
     h1 {
         font-size: 24px;
     }
@@ -695,13 +577,13 @@ h3 {
         transition: opacity 0.5s !important;
     }
 
-    .samples.mobile {
+    /* .samples.mobile {
         display: flex !important;
     }
 
     .samples.desktop {
         display: none !important;
-    }
+    } */
 
     .cards {
         flex-direction: column !important;

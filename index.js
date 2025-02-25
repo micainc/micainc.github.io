@@ -163,6 +163,171 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add scroll event listener
     window.addEventListener('scroll', updateNavbar);
 
+
+
+
+
+    
+
+    const samplesSection = document.getElementById('samples');
+    const sampleImages = samplesSection.querySelectorAll('img');
+    const numImages = sampleImages.length;
+    
+    // Clear and create container
+    // samplesSection.innerHTML = '';
+    // const slicesContainer = document.createElement('div');
+    // slicesContainer.className = 'slices-container';
+    // samplesSection.appendChild(slicesContainer);
+    
+    console.log(samplesSection.clientWidth);
+    console.log(sampleImages);
+
+    // const baseImgWidth = samplesSection.clientWidth/numImages;
+    // let initPos = 0;
+
+
+
+    function updateLayout() {
+        console.log("UPDATING LAYOUT")
+        const baseImgWidth = samplesSection.clientWidth/numImages;
+        let initPos = 0;
+        sampleImages.forEach(image => {
+            image.style.width = `${baseImgWidth}px`;
+            image.style.height = `512px`;
+            image.style.left = `${initPos}px`;
+            image.style.objectFit = `none`;
+            image.style.objectPosition = `${-initPos}px 0px`;
+    
+            initPos += baseImgWidth;
+    
+        })
+
+
+    }
+
+    function handleHover(e) {
+        const hoveredImg = e.target.closest('img');
+        if (!hoveredImg) return;
+        
+        const initImgWidth = samplesSection.clientWidth/numImages;
+        const hoveredImgWidth = initImgWidth*2;
+        const ignoredImgWidth = (samplesSection.clientWidth - initImgWidth) / (numImages);
+
+        let initPos = 0;
+        sampleImages.forEach(image => {
+            if(image === hoveredImg) {
+                image.style.width = `${hoveredImgWidth}px`;
+                image.style.height = `512px`;
+                image.style.left = `${initPos}px`;
+                image.style.objectFit = `none`;
+                image.style.objectPosition = `${-initPos}px 0px`;
+                initPos += hoveredImgWidth;
+
+            } else {
+                image.style.width = `${ignoredImgWidth}px`;
+                image.style.height = `512px`;
+                image.style.left = `${initPos}px`;
+                image.style.objectFit = `none`;
+                image.style.objectPosition = `${-initPos}px 0px`;    
+                initPos += ignoredImgWidth;
+            }
+
+        })
+    }
+
+    window.addEventListener('resize', updateLayout);
+    samplesSection.addEventListener('mouseover', handleHover);
+    samplesSection.addEventListener('mouseleave', updateLayout);
+    updateLayout();
+
+
+    // // Get image URLs
+    // const imageUrls = Array.from(sampleImages).map(img => img.src);
+    
+    // // Create slices
+    // imageUrls.forEach((url, index) => {
+    //   const slice = document.createElement('div');
+    //   slice.className = 'sample-slice';
+    //   slice.style.backgroundImage = `url(${url})`;
+    //   slicesContainer.appendChild(slice);
+    // });
+    
+    // // Update layout based on orientation
+    // function updateLayout() {
+    //   const isLandscape = window.innerWidth > window.innerHeight;
+    //   samplesSection.classList.toggle('landscape', isLandscape);
+    //   samplesSection.classList.toggle('portrait', !isLandscape);
+      
+    //   const slices = slicesContainer.querySelectorAll('.sample-slice');
+    //   const defaultSize = 100 / numImages;
+      
+    //   // Reset all slices to equal size
+    //   let position = 0;
+    //   slices.forEach((slice, index) => {
+    //     if (isLandscape) {
+    //       // Vertical slices
+    //       slice.style.left = `${position}%`;
+    //       slice.style.top = '0';
+    //       slice.style.width = `${defaultSize}%`;
+    //       slice.style.height = '100%';
+    //       // Set background position to align with slice position
+    //       slice.style.backgroundSize = `${numImages * 100}% 100%`;
+    //       slice.style.backgroundPosition = `${-position}% 0`;
+    //     } else {
+    //       // Horizontal slices
+    //       slice.style.left = '0';
+    //       slice.style.top = `${position}%`;
+    //       slice.style.width = '100%';
+    //       slice.style.height = `${defaultSize}%`;
+    //       // Set background position to align with slice position
+    //       slice.style.backgroundSize = `100% ${numImages * 100}%`;
+    //       slice.style.backgroundPosition = `0 ${-position}%`;
+    //     }
+        
+    //     position += defaultSize;
+    //   });
+    // }
+    
+    // // Handle hover effect
+    // function handleHover(e) {
+    //   const hoveredSlice = e.target.closest('.sample-slice');
+    //   if (!hoveredSlice) return;
+      
+    //   const slices = slicesContainer.querySelectorAll('.sample-slice');
+    //   const isLandscape = samplesSection.classList.contains('landscape');
+      
+    //   const expandedSize = 60; // The hovered slice gets 60% of space
+    //   const remainingSize = (100 - expandedSize) / (numImages - 1);
+      
+    //   let position = 0;
+    //   slices.forEach((slice) => {
+    //     const size = (slice === hoveredSlice) ? expandedSize : remainingSize;
+        
+    //     if (isLandscape) {
+    //       slice.style.left = `${position}%`;
+    //       slice.style.width = `${size}%`;
+    //       // Adjust background position to stay aligned with container
+    //       slice.style.backgroundPosition = `${-position * (numImages * 100 / 100)}% 0`;
+    //     } else {
+    //       slice.style.top = `${position}%`;
+    //       slice.style.height = `${size}%`;
+    //       // Adjust background position to stay aligned with container
+    //       slice.style.backgroundPosition = `0 ${-position * (numImages * 100 / 100)}%`;
+    //     }
+        
+    //     position += size;
+    //   });
+    // }
+    
+    // // Reset on mouse leave
+    // slicesContainer.addEventListener('mouseleave', updateLayout);
+    
+    // // Add event listeners
+    // slicesContainer.addEventListener('mouseover', handleHover);
+    // window.addEventListener('resize', updateLayout);
+    
+    // // Initialize
+    // updateLayout();
 });
 
 
