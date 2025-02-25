@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sampleImages.forEach(image => {
             // Handle touch start (finger down)
             image.addEventListener('touchstart', function(e) {
-                e.preventDefault(); // Prevent scrolling
+                // e.preventDefault(); // Prevent scrolling
                 
                 // Create a simulated hover event
                 const touchEvent = {
