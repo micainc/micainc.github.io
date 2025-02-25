@@ -487,12 +487,15 @@ h3 {
 
 
 #samples {
-    /* width:100%; */
-    margin:0px;
+    background-color: #FFFFFF;
     padding:0px;
-    height:512px;
     opacity: 1;
     overflow: hidden;
+}
+
+#samples-container {
+    margin:0px 64px;
+    height:512px;
 }
 
 #samples img {
@@ -500,7 +503,6 @@ h3 {
     opacity:1;
     width:100%;
     overflow:hidden;
-    background-size:contain;
 }
 
 #contact {
@@ -581,14 +583,6 @@ h3 {
         display: block !important;
         transition: opacity 0.5s !important;
     }
-
-    /* .samples.mobile {
-        display: flex !important;
-    }
-
-    .samples.desktop {
-        display: none !important;
-    } */
 
     .cards {
         flex-direction: column !important;

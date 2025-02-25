@@ -169,36 +169,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
 
-    const samplesSection = document.getElementById('samples');
+    const samplesSection = document.getElementById('samples-container');
     const sampleImages = samplesSection.querySelectorAll('img');
     const numImages = sampleImages.length;
+    const imgWidth = sampleImages[0].naturalWidth
+    const windowWidth = (samplesSection.clientWidth/numImages);
+    const widthScaleFactor = samplesSection.clientWidth/imgWidth
     
-    // Clear and create container
-    // samplesSection.innerHTML = '';
-    // const slicesContainer = document.createElement('div');
-    // slicesContainer.className = 'slices-container';
-    // samplesSection.appendChild(slicesContainer);
-    
-    console.log(samplesSection.clientWidth);
+    console.log("WINDOW WIDTH: ",  windowWidth);
+    console.log("NATURAL WIDTH: ",  imgWidth);
+    console.log("SCALE: ", widthScaleFactor)
+    console.log("SAMPLES SECTION WIDTH: ", samplesSection.clientWidth);
+    console.log(samplesSection);
     console.log(sampleImages);
-
-    // const baseImgWidth = samplesSection.clientWidth/numImages;
-    // let initPos = 0;
-
-
 
     function updateLayout() {
         console.log("UPDATING LAYOUT")
-        const baseImgWidth = samplesSection.clientWidth/numImages;
-        let initPos = 0;
+        let initPos = samplesSection.offsetLeft;
         sampleImages.forEach(image => {
-            image.style.width = `${baseImgWidth}px`;
+            image.style.transformOrigin = 'top left';
+            image.style.transform = `scale(${widthScaleFactor})`;
+            console.log("SCALED IMAGE WIDTH: ", image.width)
+            image.style.width = `${windowWidth}px`;
+            // image.style.zoom = 1.4;
             image.style.height = `512px`;
             image.style.left = `${initPos}px`;
             image.style.objectFit = `none`;
-            image.style.objectPosition = `${-initPos}px 0px`;
-    
-            initPos += baseImgWidth;
+            image.style.objectPosition = `${samplesSection.offsetLeft/widthScaleFactor-initPos/widthScaleFactor}px 0px`;
+            image.style.backgroundSize = 'none';
+            initPos += windowWidth;
     
         })
 
@@ -212,15 +211,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const initImgWidth = samplesSection.clientWidth/numImages;
         const hoveredImgWidth = initImgWidth*2;
         const ignoredImgWidth = (samplesSection.clientWidth - initImgWidth) / (numImages);
+        const widthScaleFactor = samplesSection.clientWidth/imgWidth
 
-        let initPos = 0;
+        let initPos = samplesSection.offsetLeft;
         sampleImages.forEach(image => {
             if(image === hoveredImg) {
                 image.style.width = `${hoveredImgWidth}px`;
                 image.style.height = `512px`;
                 image.style.left = `${initPos}px`;
                 image.style.objectFit = `none`;
-                image.style.objectPosition = `${-initPos}px 0px`;
+                image.style.objectPosition = `${samplesSection.offsetLeft/widthScaleFactor-initPos/widthScaleFactor}px 0px`;
                 initPos += hoveredImgWidth;
 
             } else {
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 image.style.height = `512px`;
                 image.style.left = `${initPos}px`;
                 image.style.objectFit = `none`;
-                image.style.objectPosition = `${-initPos}px 0px`;    
+                image.style.objectPosition = `${samplesSection.offsetLeft/widthScaleFactor-initPos/widthScaleFactor}px 0px`;    
                 initPos += ignoredImgWidth;
             }
 
