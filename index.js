@@ -57,11 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         './public/imgs/9b_2_segmentation_map.png'
     ];
     
-    // Add loading indicators to sample container
-    const samplesContainer = document.getElementById('samples-container');
-    if (samplesContainer) {
-        samplesContainer.innerHTML += '<div id="samples-loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.7);padding:15px;border-radius:5px;color:white;">Loading samples...</div>';
-    }
 
     // 3. Add lazy loading to team profile images
     document.querySelectorAll('.profile img').forEach(img => {
@@ -98,10 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Sample images loaded successfully');
             imageLoadTracker.samples = true;
             
-            // Hide the loading indicator
-            const samplesLoading = document.getElementById('samples-loading');
-            if (samplesLoading) samplesLoading.style.display = 'none';
-            
             // Now initialize the sample container layout
             // This is your existing updateLayout function
             updateLayout();
@@ -135,8 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ensure error doesn't prevent other functionality
             updateLayout();
         });
-
-
 
 
 
