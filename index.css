@@ -488,21 +488,22 @@ h3 {
 
 #samples {
     background-color: #FFFFFF;
-    padding:0px;
     opacity: 1;
     overflow: hidden;
+    padding-top:0px;
+    padding-bottom:0px;
+
 }
 
 #samples-container {
-    margin:0px 64px;
     height:512px;
 }
 
 #samples img {
     position:absolute;
     opacity:1;
-    width:100%;
-    overflow:hidden;
+    overflow-x:hidden;
+    height:512px;
 }
 
 #contact {
