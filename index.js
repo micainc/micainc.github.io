@@ -357,6 +357,36 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', updateLayout);
     samplesSection.addEventListener('mouseover', handleHover);
     samplesSection.addEventListener('mouseleave', updateLayout);
+
+    // Add this after your existing event listeners
+    function setupTouchEvents() {
+        sampleImages.forEach(image => {
+            // Handle touch start (finger down)
+            image.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Prevent scrolling
+                
+                // Create a simulated hover event
+                const touchEvent = {
+                    target: {
+                        closest: function() { return image; }
+                    }
+                };
+                
+                // Call the same handler used for mouse hover
+                handleHover(touchEvent);
+            });
+            
+            // Optional: Reset when touch ends
+            image.addEventListener('touchend', function() {
+                // Add small delay so users can see the effect
+                setTimeout(updateLayout, 300);
+            });
+        });
+    }
+
+    // Call this function to set up touch events
+    setupTouchEvents();
+
     // updateLayout();
 
 });
