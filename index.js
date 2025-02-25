@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', updateLayout);
     samplesSection.addEventListener('mouseover', handleHover);
     samplesSection.addEventListener('mouseleave', updateLayout);
-    // updateLayout();
+    updateLayout();
 
 });
 
