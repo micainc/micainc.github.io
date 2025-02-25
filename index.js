@@ -1,4 +1,3 @@
-// Add this helper function at the start
 function getAngularDistance(angle1, angle2) {
     let diff = Math.abs(angle1 - angle2);
     return Math.min(diff, 360 - diff);
@@ -15,6 +14,133 @@ const peakAngles = {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
+
+
+
+
+
+
+
+
+    // Create an array to track loaded images
+    const imageLoadTracker = {
+        hero: false,
+        samples: false,
+        team: false
+    };
+
+    // 1. Preload hero images first with high priority
+    const heroImageUrls = [
+        './public/imgs/w3_2_composite.jpg',
+        './public/imgs/w3_2_aligned_cp_1.jpg',
+        './public/imgs/w3_2_aligned_cp_2.jpg',
+        './public/imgs/w3_2_aligned_cp_3.jpg',
+        './public/imgs/w3_2_aligned_cp_4.jpg'
+    ];
+    
+    // Create image objects to preload hero images
+    const heroPreloads = heroImageUrls.map(url => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => resolve(url);
+            img.onerror = () => reject(url);
+        });
+    });
+
+    // 2. Load sample images after hero images
+    const sampleImageUrls = [
+        './public/imgs/9b_2_lin.jpg',
+        './public/imgs/9b_2_composite.jpg',
+        './public/imgs/9b_2_texture.jpg',
+        './public/imgs/9b_2_segmentation_map.png'
+    ];
+    
+    // Add loading indicators to sample container
+    const samplesContainer = document.getElementById('samples-container');
+    if (samplesContainer) {
+        samplesContainer.innerHTML += '<div id="samples-loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.7);padding:15px;border-radius:5px;color:white;">Loading samples...</div>';
+    }
+
+    // 3. Add lazy loading to team profile images
+    document.querySelectorAll('.profile img').forEach(img => {
+        img.setAttribute('loading', 'lazy');
+        
+        // Store original src and set a placeholder
+        const originalSrc = img.getAttribute('src');
+        img.setAttribute('data-src', originalSrc);
+        img.setAttribute('src', 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E');
+    });
+
+    // Now start the loading sequence
+    Promise.all(heroPreloads)
+        .then(() => {
+            console.log('Hero images loaded successfully');
+            imageLoadTracker.hero = true;
+            
+            // Now load sample images
+            const samplesLoading = document.getElementById('samples-loading');
+            
+            // Create image objects to preload sample images
+            const samplePreloads = sampleImageUrls.map(url => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.src = url;
+                    img.onload = () => resolve(url);
+                    img.onerror = () => reject(url);
+                });
+            });
+            
+            return Promise.all(samplePreloads);
+        })
+        .then(() => {
+            console.log('Sample images loaded successfully');
+            imageLoadTracker.samples = true;
+            
+            // Hide the loading indicator
+            const samplesLoading = document.getElementById('samples-loading');
+            if (samplesLoading) samplesLoading.style.display = 'none';
+            
+            // Now initialize the sample container layout
+            // This is your existing updateLayout function
+            updateLayout();
+            
+            // Start loading team images
+            document.querySelectorAll('.profile img').forEach(img => {
+                const originalSrc = img.getAttribute('data-src');
+                if (originalSrc) {
+                    img.setAttribute('src', originalSrc);
+                }
+            });
+        })
+        .catch(errorUrl => {
+            console.error('Failed to load image:', errorUrl);
+            // Handle failed image loading - provide fallbacks
+            
+            // If hero images fail, still try to load samples
+            if (!imageLoadTracker.hero) {
+                imageLoadTracker.hero = true; // Mark as attempted
+                // Try to load sample images anyway
+                const samplesLoading = document.getElementById('samples-loading');
+                if (samplesLoading) samplesLoading.innerHTML = 'Loading samples (fallback)...';
+                
+                // Load sample images
+                const sampleElements = document.querySelectorAll('#samples-container img');
+                sampleElements.forEach(img => {
+                    img.style.opacity = '1';
+                });
+            }
+            
+            // Ensure error doesn't prevent other functionality
+            updateLayout();
+        });
+
+
+
+
+
+    
     const navbar = document.getElementById('navbar');
     const logo = document.getElementById('logo');
     const icon = document.getElementById('icon');
@@ -242,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', updateLayout);
     samplesSection.addEventListener('mouseover', handleHover);
     samplesSection.addEventListener('mouseleave', updateLayout);
-    updateLayout();
+    // updateLayout();
 
 });
 
