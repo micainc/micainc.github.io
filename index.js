@@ -393,16 +393,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
         
-        // Reset when all touches end
-        samplesContainer.addEventListener('touchend', function(e) {
-            if (e.touches.length === 0) {  // No more touches on the screen
-                // Add delay so users can see the effect
-                setTimeout(() => {
-                    updateLayout();
-                    currentTouchedImage = null;
-                }, 1500);
-            }
-        });
+        // // Reset when all touches end
+        // samplesContainer.addEventListener('touchend', function(e) {
+        //     if (e.touches.length === 0) {  // No more touches on the screen
+        //         // Add delay so users can see the effect
+        //         setTimeout(() => {
+        //             updateLayout();
+        //             currentTouchedImage = null;
+        //         }, 1500);
+        //     }
+        // });
         
         // Initial touch still triggers hover
         sampleImages.forEach(image => {
@@ -415,14 +415,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 handleHover(touchEvent);
                 currentTouchedImage = image;
                 
-                // Prevent long-press selection
-                const longPressTimer = setTimeout(() => {
-                    e.preventDefault();
-                }, 500);
-                
-                image.addEventListener('touchend', () => {
-                    clearTimeout(longPressTimer);
-                }, { once: true });
             }, { passive: false });
         });
     }
