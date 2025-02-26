@@ -502,6 +502,19 @@ h3 {
     position:absolute;
     opacity:1;
     overflow-x:hidden;
+
+    /* Prevent selection and context menus */
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    
+    /* Prevent drag */
+    pointer-events: auto;
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #contact {
