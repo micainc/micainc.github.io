@@ -292,24 +292,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let widthScaleFactor = samplesSection.clientWidth/imgWidth
     
     // console.log("WINDOW WIDTH: ",  windowWidth);
-    console.log("NATURAL WIDTH: ",  imgWidth);
-    console.log("SCALE: ", widthScaleFactor)
-    console.log("SAMPLES SECTION WIDTH: ", samplesSection.clientWidth);
-    console.log(samplesSection);
-    console.log(sampleImages);
+    // console.log("NATURAL WIDTH: ",  imgWidth);
+    // console.log("SCALE: ", widthScaleFactor)
+    // console.log("SAMPLES SECTION WIDTH: ", samplesSection.clientWidth);
+    // console.log(samplesSection);
+    // console.log(sampleImages);
 
     function updateLayout() {
         imgWidth = sampleImages[0].naturalWidth
-        console.log("UPDATING SAMPLES LAYOUT!")
         windowWidth = samplesSection.clientWidth/numImages
-        console.log("WINDOW WIDTH: ", windowWidth)
         widthScaleFactor = samplesSection.clientWidth/imgWidth
-        
-        console.log("UPDATING LAYOUT")
+
         let initPos = samplesSection.offsetLeft;
         sampleImages.forEach(image => {
             image.style.transformOrigin = 'top left';
             image.style.transform = `scale(${widthScaleFactor})`;
+
             image.style.width = `${windowWidth/widthScaleFactor}px`;
             image.style.height = `${512/widthScaleFactor}px`;
 
@@ -363,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sampleImages.forEach(image => {
             // Handle touch start (finger down)
             image.addEventListener('touchstart', function(e) {
-                // e.preventDefault(); // Prevent scrolling
                 
                 // Create a simulated hover event
                 const touchEvent = {
@@ -376,11 +373,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 handleHover(touchEvent);
             });
             
-            // Optional: Reset when touch ends
+            // Reset when touch ends
             image.addEventListener('touchend', function() {
-                // Add small delay so users can see the effect
-                setTimeout(updateLayout, 300);
+                // Only reset if this was the last image touched
+                if (image.dataset.touched === 'true') {
+                    // Add delay so users can see the effect
+                    setTimeout(() => {
+                        // Check if user has scrolled significantly before resetting
+                        updateLayout();
+                        // Clear the touched flag
+                        image.dataset.touched = 'false';
+                    }, 1000); // Longer delay to ensure effect is visible
+                }
             });
+            
+            // Also handle touch move to maintain the effect while dragging
+            image.addEventListener('touchmove', function(e) {
+                // This allows scrolling while keeping the hover effect
+                // No need to prevent default here
+            });
+
+
+
+        });
+
+        // Add a handler to reset the layout when scrolling stops
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(updateLayout, 200);
         });
     }
 

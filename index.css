@@ -492,18 +492,16 @@ h3 {
     overflow: hidden;
     padding-top:0px;
     padding-bottom:0px;
-
 }
 
 #samples-container {
-    height:512px;
+    height:256px;
 }
 
 #samples img {
     position:absolute;
     opacity:1;
     overflow-x:hidden;
-    height:512px;
 }
 
 #contact {
