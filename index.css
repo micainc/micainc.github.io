@@ -495,7 +495,7 @@ h3 {
 }
 
 #samples-container {
-    height:256px;
+    height:512px;
 }
 
 #samples img {
@@ -572,6 +572,10 @@ h3 {
     }
     .section {
         padding: 32px;
+    }
+
+    #samples-container {
+        height:256px;
     }
 
     .hamburger {
