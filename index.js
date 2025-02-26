@@ -396,13 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         });
-
-        // Add a handler to reset the layout when scrolling stops
-        let scrollTimeout;
-        window.addEventListener('scroll', function() {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateLayout, 200);
-        });
     }
 
     // Call this function to set up touch events
