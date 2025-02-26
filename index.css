@@ -502,6 +502,12 @@ h3 {
     position:absolute;
     opacity:1;
     overflow-x:hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: auto;
+    /* Ensure touch still works */
+    touch-action: manipulation;
 }
 
 #contact {
