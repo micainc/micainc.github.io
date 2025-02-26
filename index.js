@@ -358,51 +358,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add this after your existing event listeners
     function setupTouchEvents() {
-        sampleImages.forEach(image => {
-            // Handle touch start (finger down)
-            image.addEventListener('touchstart', function(e) {
-                
-                // Create a simulated hover event
+        const samplesContainer = document.getElementById('samples-container');
+        let currentTouchedImage = null;
+        
+        // Handle touch detection throughout the samples section
+        samplesContainer.addEventListener('touchmove', function(e) {
+            // Get the touch position
+            const touch = e.touches[0];
+            const touchX = touch.clientX;
+            const touchY = touch.clientY;
+            
+            // Find which image is under the touch position
+            let imageUnderTouch = null;
+            sampleImages.forEach(image => {
+                const rect = image.getBoundingClientRect();
+                if (touchX >= rect.left && touchX <= rect.right && 
+                    touchY >= rect.top && touchY <= rect.bottom) {
+                    imageUnderTouch = image;
+                }
+            });
+            
+            // If we found an image under the touch and it's different from the current one
+            if (imageUnderTouch && imageUnderTouch !== currentTouchedImage) {
+                // Apply hover effect to the new image
                 const touchEvent = {
                     target: {
-                        closest: function() { return image; }
+                        closest: function() { return imageUnderTouch; }
                     }
                 };
                 
                 // Call the same handler used for mouse hover
                 handleHover(touchEvent);
-            });
-            
-            // Reset when touch ends
-            image.addEventListener('touchend', function() {
-                // Only reset if this was the last image touched
-                if (image.dataset.touched === 'true') {
-                    // Add delay so users can see the effect
-                    setTimeout(() => {
-                        // Check if user has scrolled significantly before resetting
-                        updateLayout();
-                        // Clear the touched flag
-                        image.dataset.touched = 'false';
-                    }, 2000); // Longer delay to ensure effect is visible
-                }
-            });
-            
-            // Also handle touch move to maintain the effect while dragging
-            image.addEventListener('touchmove', function(e) {
-                // This allows scrolling while keeping the hover effect
-                // No need to prevent default here
-            });
-
-
-
+                currentTouchedImage = imageUnderTouch;
+            }
+        }, { passive: true });
+        
+        // Reset when all touches end
+        samplesContainer.addEventListener('touchend', function(e) {
+            if (e.touches.length === 0) {  // No more touches on the screen
+                // Add delay so users can see the effect
+                setTimeout(() => {
+                    updateLayout();
+                    currentTouchedImage = null;
+                }, 1500);
+            }
         });
-
-        // Add a handler to reset the layout when scrolling stops
-        // let scrollTimeout;
-        // window.addEventListener('scroll', function() {
-        //     clearTimeout(scrollTimeout);
-        //     scrollTimeout = setTimeout(updateLayout, 200);
-        // });
+        
+        // Initial touch still triggers hover
+        sampleImages.forEach(image => {
+            image.addEventListener('touchstart', function(e) {
+                const touchEvent = {
+                    target: {
+                        closest: function() { return image; }
+                    }
+                };
+                handleHover(touchEvent);
+                currentTouchedImage = image;
+                
+                // Prevent long-press selection
+                const longPressTimer = setTimeout(() => {
+                    e.preventDefault();
+                }, 500);
+                
+                image.addEventListener('touchend', () => {
+                    clearTimeout(longPressTimer);
+                }, { once: true });
+            }, { passive: false });
+        });
     }
 
     // Call this function to set up touch events
