@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateLayout();
                         // Clear the touched flag
                         image.dataset.touched = 'false';
-                    }, 1000); // Longer delay to ensure effect is visible
+                    }, 2000); // Longer delay to ensure effect is visible
                 }
             });
             
@@ -398,11 +398,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Add a handler to reset the layout when scrolling stops
-        let scrollTimeout;
-        window.addEventListener('scroll', function() {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateLayout, 200);
-        });
+        // let scrollTimeout;
+        // window.addEventListener('scroll', function() {
+        //     clearTimeout(scrollTimeout);
+        //     scrollTimeout = setTimeout(updateLayout, 200);
+        // });
     }
 
     // Call this function to set up touch events
