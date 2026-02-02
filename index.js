@@ -15,6 +15,18 @@ const peakAngles = {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Scroll reveal — animate .reveal elements when they enter viewport
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    revealElements.forEach(el => revealObserver.observe(el));
+
 
 
 
@@ -32,11 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Preload hero images first with high priority
     const heroImageUrls = [
-        './public/imgs/w3_2_composite.jpg',
-        './public/imgs/w3_2_aligned_cp_1.jpg',
-        './public/imgs/w3_2_aligned_cp_2.jpg',
-        './public/imgs/w3_2_aligned_cp_3.jpg',
-        './public/imgs/w3_2_aligned_cp_4.jpg'
+        '/imgs/w3_2_composite.jpg',
+        '/imgs/w3_2_aligned_cp_1.jpg',
+        '/imgs/w3_2_aligned_cp_2.jpg',
+        '/imgs/w3_2_aligned_cp_3.jpg',
+        '/imgs/w3_2_aligned_cp_4.jpg',
+        // '/imgs/9B_ppol.jpg',
+        '/imgs/9B_xpol_ref.jpg',
     ];
     
     // Create image objects to preload hero images
@@ -51,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Load sample images after hero images
     const sampleImageUrls = [
-        './public/imgs/9b_2_lin.jpg',
-        './public/imgs/9b_2_composite.jpg',
-        './public/imgs/9b_2_texture.jpg',
-        './public/imgs/9b_2_segmentation_map.png'
+        '/imgs/9b_2_old_lin.jpg',
+        '/imgs/9b_2_old_composite.jpg',
+        '/imgs/9b_2_old_texture.jpg',
+        '/imgs/9b_2_old_segmentation_map.png'
     ];
     
 
@@ -93,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Sample images loaded successfully');
             imageLoadTracker.samples = true;
             
-            // Now initialize the sample container layout
-            // This is your existing updateLayout function
-            updateLayout();
+            updateSlideLayout();
             
             // Start loading team images
             document.querySelectorAll('.profile img').forEach(img => {
@@ -124,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Ensure error doesn't prevent other functionality
-            updateLayout();
+            updateSlideLayout();
         });
 
 
@@ -134,39 +146,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const logo = document.getElementById('logo');
     const icon = document.getElementById('icon');
 
-    const heroSection = document.querySelector('.hero');
-    const heroImages = document.querySelectorAll('.hero-image');
-    const totalImages = heroImages.length - 1;
-    const hero = document.getElementById('hero')
-    const heroFov = document.getElementById('hero-fov')
+    const cardGraphicImages = document.querySelectorAll('.card-graphic-image');
+    const totalImages = cardGraphicImages.length - 1;
+    const cardGraphic = document.getElementById('card-graphic')
+    const cardGraphicFov = document.getElementById('card-graphic-fov')
 
-    const heroWidth = hero.offsetWidth; // note: when window size changes, these need to update
-    const heroHeight = hero.offsetHeight;
-    const heroFovRadius = heroFov.offsetWidth/2;
+    const cardGraphicWidth = cardGraphic.offsetWidth; // note: when window size changes, these need to update
+    const cardGraphicHeight = cardGraphic.offsetHeight;
+    const cardGraphicFovRadius = cardGraphicFov.offsetWidth/2;
 
 
     navbar.style.opacity = '1';
     // always show base 'composite' image
-    heroImages[0].style.display = 'block';
-    heroImages[0].style.opacity = '1';
+    cardGraphicImages[0].style.display = 'block';
+    cardGraphicImages[0].style.opacity = '1';
 
     function updateOpacities(offsetX, offsetY, distance) {
         var angle = 180 * Math.atan2(offsetY, offsetX) / Math.PI  // to degrees
-    
+
         // Update image visibility
-        heroImages.forEach((image, index) => {
+        cardGraphicImages.forEach((image, index) => {
             if(index === 0) {
                 // always show base 'composite' image
-    
+
                 return
             } else {
                 // opacity should be a function of the distance from the center AND the proximity to the cardinal angle for a given image
                 var angularDistance = getAngularDistance(angle, peakAngles[index])
                 if(angularDistance > 90) {
-                    image.style.display = 'none';                
+                    image.style.display = 'none';
                 } else {
                     image.style.display = 'block';
-                    var opacity = distance/heroFovRadius * (1 - getAngularDistance(angle, peakAngles[index]) / 90); 
+                    var opacity = distance/cardGraphicFovRadius * (1 - getAngularDistance(angle, peakAngles[index]) / 90);
                     image.style.opacity = Math.max(0, Math.min(1, opacity));
                 }
             }
@@ -174,17 +185,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     
-    hero.addEventListener('mouseleave', () => {
-        heroImages.forEach((image, index) => {
+    cardGraphic.addEventListener('mouseleave', () => {
+        cardGraphicImages.forEach((image, index) => {
             if(index === 0) return;
             image.style.transition = 'opacity 0.5s';
             image.style.opacity = 0;
         });
      });
-     
-     hero.addEventListener('mouseenter', () => {
+
+     cardGraphic.addEventListener('mouseenter', () => {
         setTimeout(() => {
-            heroImages.forEach((image, index) => {
+            cardGraphicImages.forEach((image, index) => {
                 if(index === 0) return;
                 image.style.transition = 'opacity 0s';
             })
@@ -194,24 +205,24 @@ document.addEventListener('DOMContentLoaded', () => {
          // Function to handle touch position
     function handleTouch(e) {
         const touch = e.touches[0];
-        // Convert touch coordinates to relative position within hero
-        const rect = hero.getBoundingClientRect();
-        const offsetX = touch.clientX - rect.left - heroWidth/2;
-        const offsetY = touch.clientY - rect.top - heroHeight/2;
+        // Convert touch coordinates to relative position within microscope
+        const rect = cardGraphic.getBoundingClientRect();
+        const offsetX = touch.clientX - rect.left - cardGraphicWidth/2;
+        const offsetY = touch.clientY - rect.top - cardGraphicHeight/2;
         const distance = (offsetX**2 + offsetY**2)**0.5;
 
         updateOpacities(offsetX, offsetY, distance);
     }
 
     // Add touch events
-    hero.addEventListener('touchstart', handleTouch);
-    hero.addEventListener('touchmove', handleTouch);
+    cardGraphic.addEventListener('touchstart', handleTouch);
+    cardGraphic.addEventListener('touchmove', handleTouch);
 
 
-    hero.addEventListener('mousemove', (e) => {
-        // find x, y distance from CENTER of hero  to mouse position
-        var offsetX = e.offsetX - heroWidth/2;
-        var offsetY = e.offsetY - heroHeight/2;
+    cardGraphic.addEventListener('mousemove', (e) => {
+        // find x, y distance from CENTER of microscope to mouse position
+        var offsetX = e.offsetX - cardGraphicWidth/2;
+        var offsetY = e.offsetY - cardGraphicHeight/2;
 
         var distance = (offsetX**2 + offsetY**2)**0.5
         updateOpacities(offsetX, offsetY, distance);
@@ -221,7 +232,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    
+
+
+
+
+
+    // ===== Hero Background (9B) interactive effect =====
+    // Vertical position controls which image is shown:
+    //   0-20%: ppol_texture (index 0, base — always visible)
+    //  20-40%: ppol (index 1)
+    //  40-60%: xpol (index 2)
+    //  60-80%: xpol_texture (index 3)
+    //  80-100%: ref (index 4)
+    // const heroBg = document.getElementById('hero-bg');
+    // const heroBgImages = heroBg.querySelectorAll('.hero-bg-image');
+
+    // // always show base image
+    // heroBgImages[0].style.display = 'block';
+    // heroBgImages[0].style.opacity = '1';
+
+    // function updateHeroBgOpacities(t) {
+    //     // t is 0 at top, 1 at bottom
+    //     // Each overlay i (1-4) has its center at (0.2*i + 0.1)
+    //     // and crossfades over a 0.2 band
+    //     heroBgImages.forEach((image, index) => {
+    //         if(index === 0) return;
+    //         var center = 0.2 * index + 0.1;
+    //         var opacity = Math.max(0, 1 - Math.abs(t - center) / 0.2);
+    //         image.style.display = opacity > 0 ? 'block' : 'none';
+    //         image.style.opacity = opacity;
+    //     });
+    // }
+
+    // heroBg.addEventListener('mouseleave', () => {
+    //     heroBgImages.forEach((image, index) => {
+    //         if(index === 0) return;
+    //         image.style.transition = 'opacity 0.5s';
+    //         image.style.opacity = 0;
+    //     });
+    // });
+
+    // heroBg.addEventListener('mouseenter', () => {
+    //     setTimeout(() => {
+    //         heroBgImages.forEach((image, index) => {
+    //             if(index === 0) return;
+    //             image.style.transition = 'opacity 0s';
+    //         });
+    //     }, 500);
+    // });
+
+    // heroBg.addEventListener('mousemove', (e) => {
+    //     const rect = heroBg.getBoundingClientRect();
+    //     var t = (e.clientY - rect.top) / rect.height;
+    //     t = Math.max(0, Math.min(1, t));
+    //     updateHeroBgOpacities(t);
+    // });
+
+    // function handleHeroBgTouch(e) {
+    //     const touch = e.touches[0];
+    //     const rect = heroBg.getBoundingClientRect();
+    //     var t = (touch.clientY - rect.top) / rect.height;
+    //     t = Math.max(0, Math.min(1, t));
+    //     updateHeroBgOpacities(t);
+    // }
+
+    // heroBg.addEventListener('touchstart', handleHeroBgTouch);
+    // heroBg.addEventListener('touchmove', handleHeroBgTouch);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // hamburger menu
     const hamburger = document.querySelector('.hamburger');
@@ -262,8 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (sectionsRect.top <= navbarHeight) { // first section overlaps navbar: 
             navbar.style.outline = '2px solid #FFFFFF';
-            navbar.style.backdropFilter= 'blur(16px)';
-            navbar.style.backgroundColor= '#00000040';     
+            // navbar.style.backdropFilter= 'blur(16px)';
+            navbar.style.backgroundColor= '#000000';     
 
         } else {
             navbar.style.outline = '0px solid #FFFFFF';
@@ -285,11 +375,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     let samplesSection = document.getElementById('samples-container');
-    const sampleImages = samplesSection.querySelectorAll('img');
+    const sampleImages = samplesSection ? samplesSection.querySelectorAll('img') : [];
     const numImages = sampleImages.length;
-    let imgWidth = sampleImages[0].naturalWidth
-    let windowWidth = (samplesSection.clientWidth/numImages);
-    let widthScaleFactor = samplesSection.clientWidth/imgWidth
+    let imgWidth = numImages > 0 ? sampleImages[0].naturalWidth : 1;
+    let windowWidth = samplesSection ? (samplesSection.clientWidth/numImages) : 0;
+    let widthScaleFactor = samplesSection ? samplesSection.clientWidth/imgWidth : 1;
     
     // console.log("WINDOW WIDTH: ",  windowWidth);
     // console.log("NATURAL WIDTH: ",  imgWidth);
@@ -298,7 +388,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(samplesSection);
     // console.log(sampleImages);
 
-    function updateLayout() {
+    function updateSlideLayout() {
+        if (!samplesSection || numImages === 0) return;
         imgWidth = sampleImages[0].naturalWidth
         windowWidth = samplesSection.clientWidth/numImages
         widthScaleFactor = samplesSection.clientWidth/imgWidth
@@ -323,6 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hoveredImg = e.target.closest('img');
         if (!hoveredImg) return;
         samplesSection = document.getElementById('samples-container');
+        if (!samplesSection) return;
 
         const initImgWidth = samplesSection.clientWidth/numImages;
         const widthScaleFactor = samplesSection.clientWidth/imgWidth
@@ -352,15 +444,18 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    window.addEventListener('resize', updateLayout);
-    samplesSection.addEventListener('mouseover', handleHover);
-    samplesSection.addEventListener('mouseleave', updateLayout);
+    window.addEventListener('resize', updateSlideLayout);
+    if (samplesSection) {
+        samplesSection.addEventListener('mouseover', handleHover);
+        samplesSection.addEventListener('mouseleave', updateSlideLayout);
+    }
 
     // Add this after your existing event listeners
     function setupTouchEvents() {
         const samplesContainer = document.getElementById('samples-container');
+        if (!samplesContainer) return;
         let currentTouchedImage = null;
-        
+
         // Handle touch detection throughout the samples section
         samplesContainer.addEventListener('touchmove', function(e) {
             // Get the touch position
@@ -393,17 +488,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
         
-        // // Reset when all touches end
-        // samplesContainer.addEventListener('touchend', function(e) {
-        //     if (e.touches.length === 0) {  // No more touches on the screen
-        //         // Add delay so users can see the effect
-        //         setTimeout(() => {
-        //             updateLayout();
-        //             currentTouchedImage = null;
-        //         }, 1500);
-        //     }
-        // });
-        
         // Initial touch still triggers hover
         sampleImages.forEach(image => {
             image.addEventListener('touchstart', function(e) {
@@ -421,8 +505,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call this function to set up touch events
     setupTouchEvents();
-
-    // updateLayout();
 
 });
 

@@ -4,174 +4,331 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MICA</title>
-    <link rel="icon" type="image/png" href="./public/imgs/favicon.png">
-    <link rel="apple-touch-icon" href="./public/imgs/favicon.png">
+    <link rel="icon" type="image/png" href="/imgs/favicon.png">
+    <link rel="apple-touch-icon" href="/imgs/favicon.png">
     <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
     <nav id="navbar">
         <div id="navbar-logo">
-            <img src="./public/imgs/mica_logo.png" id="logo"/>
-            <img src="./public/imgs/mica_icon.png" id="icon"/>
+            <img src="/imgs/mica_logo.png" id="logo"/>
+            <img src="/imgs/mica_icon.png" id="icon"/>
         </div>
-        <img class="hamburger" src="./public/imgs/hamburger.png"/>
+        <img class="hamburger" src="/imgs/hamburger.png"/>
 
         <div class="navbar-links">
-
             <a href="#about">ABOUT</a>
             <a href="#services">SERVICES</a>
             <a href="#team">TEAM</a>
-
-            <!-- <a href="#projects">PROJECTS</a> -->
             <a href="#contact">CONTACT</a>
         </div>
     </nav>
 
-    <div class="hero" id="hero">
-        <!-- <div class = "hero-matrix"></div> -->
-        <div class="hero-fov" id="hero-fov" >
-            <div class="hero-image" data-index="0"></div>
-            <div class="hero-image" data-index="1"></div>
-            <div class="hero-image" data-index="2"></div>
-            <div class="hero-image" data-index="3"></div>
-            <div class="hero-image" data-index="4"></div>
-        </div>
+    <div class="hero" id="hero-bg">
+        <div class="hero-bg-image" data-index="0"></div>
+        <canvas class="seg-overlay" id="seg-overlay-a"></canvas>
+        <canvas class="seg-overlay" id="seg-overlay-b"></canvas>
+        <div id="seg-label"></div>
+        <div id="mineral-legend"></div>
     </div>
 
-    <div class="hero-padding"></div>
 
     <div id="sections">
 
-              
-        <div class="section" id="about">
-            <h1>About</h1>
-            <p>
-                MICA is a petrographic analysis software company, focused on building advanced AI-powered tools for the mining sector.
-            </p>
 
-            <p class="highlight-container">
-                We use <span class="highlight">M</span>ultimodal <span class="highlight">I</span>maging to automate the <span class="highlight">C</span>lassification and <span class="highlight">A</span>nalysis of mineral grains in thin-sections, 
-                allowing our partners to derive clear, actionable insights from complex datasets. 
-            </p>
+        <div class="section bg-transparent reveal" id="about">
+            <h2>01 — ABOUT</h2>
+            <h1>Quantitative petrography,<br>accelerated.</h1>
+                <div id="about-content">
+                <div class="about-section-left">
+
+                    <p>
+                        <b>MICA</b> is a petrographic analysis laboratory based in Vancouver, BC. We deliver quantitative mineral analysis, texture characterization, and automated reporting for exploration and geometallurgy programs.
+                    </p>
+
+                    <p class="highlight-container">
+                        Our platform uses <span class="highlight">M</span>ultimodal <span class="highlight">I</span>maging to automate the <span class="highlight">C</span>lassification and <span class="highlight">A</span>nalysis of mineral grains in thin-sections — supporting 85+ species at 88% pixel-level accuracy and 3.5 µm resolution.
+                    </p>
+
+                    <p>
+                        Every result is verified by an expert petrographer before delivery. We do not release data we have not personally reviewed.
+                    </p>
+                </div>
+
+            </div>
         </div>
-
 
         <div class="section" id="samples">
-            <div id="samples-container">
-                <img src="./public/imgs/9b_2_lin.jpg" draggable="false"/>
-                <img src="./public/imgs/9b_2_composite.jpg" draggable="false"/>
-                <img src="./public/imgs/9b_2_texture.jpg" draggable="false"/>
-                <img src="./public/imgs/9b_2_segmentation_map.png" draggable="false"/>
+        </div>
+
+
+        <div class="section reveal" id="clients">
+            <h2>02 — WHY MICA</h2>
+            <h1>Rigorous analysis.<br>A fraction of the cost.</h1>
+
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-number">85+</span>
+                    <span class="stat-label">Mineral Species</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">88%</span>
+                    <span class="stat-label">Pixel-Level Accuracy</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">3.5 µm</span>
+                    <span class="stat-label">Spatial Resolution</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">&lt;10%</span>
+                    <span class="stat-label">Cost of SEM Analysis</span>
+                </div>
+            </div>
+
+            <p>MOSAIC employs cutting-edge computer vision to assess subtle mineralogical and textural features otherwise not captured through standard geochemical analysis, assay, or core scanning technologies. Unlike SEM-based platforms, our optical approach is non-destructive, captures texture and fabric data, and processes entire thin sections at once.</p>
+
+            <ul class="offerings">
+                <li>Full-section analysis across transmitted and incident light channels</li>
+                <li>Grain size distributions, fabric orientation, and mineral associations</li>
+                <li>Full-scale scans up to 10 GB processed locally in minutes</li>
+                <li>CSV export compatible with LeapFrog, Vulcan, and leading geospatial software</li>
+                <li>All results verified by a qualified petrographer before delivery</li>
+            </ul>
+        </div>
+
+
+        <div class="section reveal" id="process">
+            <h2>03 — HOW IT WORKS</h2>
+            <h1>From thin section to report.</h1>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <span class="step-number">01</span>
+                    <h3>SUBMIT</h3>
+                    <p>Send us your thin sections or existing digital scans in any standard format — PNG, JPEG, TIFF, or CZI.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-number">02</span>
+                    <h3>DIGITIZE</h3>
+                    <p>We capture high-resolution multi-channel imagery across cross-polarized, plane-polarized, and reflected light.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-number">03</span>
+                    <h3>ANALYZE</h3>
+                    <p>Independent AI models classify every pixel across 85+ mineral species. Grain boundaries, size distributions, and fabric metrics are computed automatically.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-number">04</span>
+                    <h3>VERIFY</h3>
+                    <p>An expert petrographer reviews and validates all results. Nothing ships without human sign-off.</p>
+                </div>
+                <div class="process-step">
+                    <span class="step-number">05</span>
+                    <h3>DELIVER</h3>
+                    <p>You receive a full quantitative report — modal abundances, grain metrics, fabric analysis — plus CSV data ready for your modelling software.</p>
+                </div>
             </div>
         </div>
 
 
-        <div class="section" id="clients">
-            <h1>
-                Why Choose MICA?
-            </h1>
-            <p>Our data-processing toolkit enables exploratory and laboratory teams to leverage computer vision and data-science. This means faster, more precise sample processing than with traditional analog setups. Through our desktop platform "MOSAIC", our partners have access to: </p>
-            <br/>
-            <div class="offerings">
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;State-of-the-art computer vision models</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;External geospatial platform integrations </p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;Custom solution training and optimization</p>
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;Advanced analytical and reporting tools</p>
-            </div>
-        </div>
-
-
-        <div class="section" id="services">
+        <div class="section reveal" id="services">
+            <h2>04 — SERVICES</h2>
             <h1>Services</h1>
             <div class="cards">
                 <div class="card">
-                    <div class="card-name">
-                        <h3>IMAGING </h3>
-                        <img src="./public/imgs/microscope.png"/>
+                    <div class="card-graphic" id="card-graphic">
+                        <div class="card-graphic-fov" id="card-graphic-fov" >
+                            <div class="card-graphic-image" data-index="0"></div>
+                            <div class="card-graphic-image" data-index="1"></div>
+                            <div class="card-graphic-image" data-index="2"></div>
+                            <div class="card-graphic-image" data-index="3"></div>
+                            <div class="card-graphic-image" data-index="4"></div>
+                        </div>
                     </div>
+                    <span class="card-number">01</span>
+                    <h3>THIN SECTION SCANNING</h3>
                     <p>
-                        Users import data samples by simply dragging and dropping high-resolution image layers into the MOSAIC interface. From there, we perform multidimensional clustering and filtering to reveal hidden details with incredible clarity.
+                        High-resolution digitization of thin sections across cross-polarized, plane-polarized, and reflected light. We accept physical slides or existing digital scans in PNG, JPEG, TIFF, and CZI formats.
                     </p>
                 </div>
                 <div class="card">
-                    <div class="card-name">
-                        <h3>CLASSIFICATION</h3>
-                        <img src="./public/imgs/magic-wand.png"/>
+                    <div class="card-graphic-static white-grid">
+                        <img src="/imgs/w3_2_composite_segmentation_map.png" alt="Segmentation map — color-coded mineral classification of a full thin section"/>
+                        <span class="card-graphic-label">Segmentation map — color-coded mineral classification output</span>
                     </div>
+                    <span class="card-number">02</span>
+                    <h3>QUANTITATIVE MINERAL ANALYSIS</h3>
                     <p>
-                        Our pre-trained AI models classify and identify individual mineral grains instantly - providing precise, real-time results that eliminate the guesswork of traditional analysis. 
+                        Precise determination of modal abundances for all mineral phases in the field of view. Full-scale classification of multi-channel thin section scans, pixel by pixel.
                     </p>
                 </div>
                 <div class="card">
-                    <div class="card-name">
-                        <h3>ANALYSIS</h3>
-                        <img src="./public/imgs/magnifying-glass.png"/>
+                    <div class="card-graphic-static">
+                        <img src="/imgs/w3_2_edge_map.png" alt="Grain boundary map — edge detection overlay with size distribution data"/>
+                        <span class="card-graphic-label">Grain boundary overlay, edge map, or fabric rose diagram</span>
                     </div>
+                    <span class="card-number">03</span>
+                    <h3>TEXTURE & GRAIN METRICS</h3>
                     <p>
-                        The MOSAIC platform provides deep insight into the mineralogy of your samples, by automatically producing context-rich size, spatial, and correlative distribution data that can be ported directly into other platforms. 
+                        Automated digitization of grain boundaries, size distributions (D10/D50/D90), and fabric analysis — including orientation, fabric strength, and polar stereographic projections.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-graphic-static">
+                        <img src="/imgs/report_preview.png" alt="Quantitative report — modal abundance table and CSV output"/>
+                        <span class="card-graphic-label">Report output — modal abundance table or CSV summary</span>
+                    </div>
+                    <span class="card-number">04</span>
+                    <h3>REPORTING + INTEGRATION</h3>
+                    <p>
+                        Structured CSV output for direct compatibility with LeapFrog, Vulcan, and standard geospatial modelling software. Block model integration ready.
                     </p>
                 </div>
             </div>
-
         </div>
 
-        <div class="section" id="mosaic">
+
+        <div class="section reveal" id="mosaic">
+            <h2>05 — PLATFORM</h2>
             <h1>Mosaic</h1>
-            <p>...is our state-of-the-art big data platform tailored for multilayer data analysis. More coming soon!</p>
+            <p>MOSAIC is our flagship analytical platform — installed locally for complete data security, with or without cloud services. It combines multiple independently-trained AI models across cross-polarized, plane-polarized, and reflected light to produce classification accuracy that rivals manual expert analysis, at a fraction of the time.</p>
+
+            <div class="mosaic-features">
+                <div class="mosaic-feature">
+                    <h3>MULTI-CHANNEL FUSION</h3>
+                    <p>Independent models per light channel — cross-polarized, plane-polarized, and reflected — fused for high-confidence classification.</p>
+                </div>
+                <div class="mosaic-feature">
+                    <h3>LOCAL PROCESSING</h3>
+                    <p>Full-scale scans up to 10 GB processed on-site. GPU acceleration delivers results in under 30 seconds. Your data never leaves your machine.</p>
+                </div>
+                <div class="mosaic-feature">
+                    <h3>COMPLETE CHARACTERIZATION</h3>
+                    <p>Modal abundances, grain boundaries, size distributions, fabric orientation, and texture maps — from a single thin section scan.</p>
+                </div>
+            </div>
+            <img class='mosaic-screenshot' src="/imgs/mosaic_screenshot.png"/>
+
+            <!-- <div class="image-placeholder">
+
+                <span>MOSAIC interface — full thin section segmentation map with mineral classification overlay and quantitative summary panel</span>
+            </div> -->
+        </div>
 
 
-
+        <div class="section reveal" id="portal-teaser">
+            <h2>06 — COMING SOON</h2>
+            <h1>Client Portal</h1>
+            <p>Secure, cloud-based access to your reports and analytical data. Review segmentation maps, export results, and track project status — all from your browser.</p>
+            <!-- <div class="image-placeholder">
+                <span>Client portal dashboard — project list, report viewer, interactive segmentation map, CSV download</span>
+            </div> -->
+            <img class='portal-under-construction' src="/imgs/construction.png"/>
 
         </div>
 
 
-        <div class="section" id="team">
+        <div class="section reveal" id="team">
+            <h2>07 — TEAM</h2>
             <h1>Our Team</h1>
-            <p>We are a group of academics and engineers who share a joint passion for petrography and data science. Our goal is to push the mining industry forward by supplementing current lab analysis methods with state-of-the-art computational technology. </p>
-            </br>
-
+            <p>MICA combines deep domain expertise in petrography with applied machine learning and production software engineering. Every analysis we deliver is grounded in geological knowledge and validated by human review.</p>
 
             <div class="profiles-section">
                 <div class="profile">
-                    <img src="./public/imgs/team/be.jpg"/>
-                    <span class="profile-name">Benjamin Edmunds, <span class="profile-role">Principal Geologist</span></span>
-                    <span class="profile-tasks">Petrography, Outreach, Data Collection, Analysis</span>
+                    <img src="/imgs/team/be.jpg"/>
+                    <span class="profile-name">Benjamin Edmunds</span>
+                    <span class="profile-role">Principal Geologist</span>
+                    <span class="profile-tasks">Petrographic analysis, quality assurance, geological interpretation, client liaison</span>
                     <span class="profile-credentials">BSc Geology</span>
-
                 </div>
                 <div class="profile">
-                    <img src="./public/imgs/team/pt.jpg"/>
-                    <span class="profile-name">Pouya Tanouri, <span class="profile-role">Operations Manager </span></span>       
-                    <span class="profile-tasks">AI Development, Strategy, Finance, Outreach</span>
-                    <span class="profile-credentials">PhD Candidate in Astrophysics, UBC</span>     
-
-                </div>            
-                <div class="profile">
-                    <img src="./public/imgs/team/kf.jpg"/>
-                    <span class="profile-name">Kelvin Filyk, <span class="profile-role">Software Architect </span></span>     
-                    <span class="profile-tasks">Data Processing, Research, App Development</span>
-                    <span class="profile-credentials">MSc Software Engineering</span>
-
+                    <img src="/imgs/team/pt.jpg"/>
+                    <span class="profile-name">Pouya Tanouri</span>
+                    <span class="profile-role">Operations Manager</span>
+                    <span class="profile-tasks">AI model development, business strategy, quantitative analysis</span>
+                    <span class="profile-credentials">PhD Candidate in Astrophysics, UBC</span>
                 </div>
                 <div class="profile">
-                    <img src="./public/imgs/team/kk.jpeg"/>
-                    <span class="profile-name">Keeyan Kazemi, <span class="profile-role">Software Engineer</span></span>
-                    <span class="profile-tasks">Research, Analytics, Algorithm Discovery</span>
-                    <span class="profile-credentials">BSc Computer Science</span>
+                    <img src="/imgs/team/kf.jpg"/>
+                    <span class="profile-name">Kelvin Filyk</span>
+                    <span class="profile-role">Software Architect</span>
+                    <span class="profile-tasks">Platform development, data pipeline engineering, computational research</span>
+                    <span class="profile-credentials">BSEng Software Engineering</span>
                 </div>
             </div>
         </div>
 
 
-        <div class="section" id="contact">
-            <h1>Contact</h1>
-            <p>Reach out to us at <a class='email-link' href="mailto:micatechnologiesinc@gmail.com">micatechnologiesinc@gmail.com</a>, or read about us on our info <a class='email-link' href="./public/imgs/ame_pamphlet.pdf" download="ame_pamphlet.pdf">pamphlet</a>.</p>
-        </div>
-            
-    </div>
-    <footer class="footer">
+        <div class="section reveal" id="careers">
+            <h2>08 — CAREERS</h2>
+            <h1>Join Our Team</h1>
+            <p>We are always looking for driven individuals with expertise in geoscience, machine learning, and software engineering.</p>
 
+            <div class="careers-grid">
+                <div class="career-card">
+                    <h3>PETROGRAPHER</h3>
+                    <span class="career-meta">Full-time · Vancouver, BC</span>
+                    <p>Perform petrographic analysis and quality assurance on automated classification results. Requires strong optical mineralogy skills and experience with thin section interpretation.</p>
+                    <a class="career-cta" href="mailto:micatechnologiesinc@gmail.com?subject=Application — Petrographer">Apply</a>
+                </div>
+                <div class="career-card">
+                    <h3>MACHINE LEARNING ENGINEER</h3>
+                    <span class="career-meta">Full-time · Vancouver, BC</span>
+                    <p>Develop and refine computer vision models for mineral classification. Experience with image segmentation, PyTorch, and geoscience data is an asset.</p>
+                    <a class="career-cta" href="mailto:micatechnologiesinc@gmail.com?subject=Application — ML Engineer">Apply</a>
+                </div>
+                <div class="career-card">
+                    <h3>GEOSCIENCE DATA ANALYST</h3>
+                    <span class="career-meta">Full-time · Vancouver, BC</span>
+                    <p>Support analytical workflows, data processing, and reporting. Familiarity with mineralogical data, CSV/GIS formats, and geological modelling software preferred.</p>
+                    <a class="career-cta" href="mailto:micatechnologiesinc@gmail.com?subject=Application — Data Analyst">Apply</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section reveal" id="contact">
+            <h2>09 — CONTACT</h2>
+            <h1>Get In Touch</h1>
+            <p>Reach out to discuss your project at <a class='email-link' href="mailto:micatechnologiesinc@gmail.com">micatechnologiesinc@gmail.com</a>.</p>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="/imgs/mica_icon.png" class="footer-logo"/>
+                <span class="footer-tagline">Quantitative petrographic analysis</span>
+                <span class="footer-tagline">Vancouver, BC</span>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <a href="#about">About</a>
+                <a href="#clients">Why MICA</a>
+                <a href="#services">Services</a>
+                <a href="#team">Team</a>
+                <a href="#careers">Careers</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <span>Thin Section Scanning</span>
+                <span>Quantitative Mineral Analysis</span>
+                <span>Texture & Grain Metrics</span>
+                <span>Reporting + Integration</span>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:micatechnologiesinc@gmail.com">micatechnologiesinc@gmail.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 MICA Technologies Inc.</span>
+        </div>
     </footer>
-    <script src="index.js"></script>
+
+    <script type="module" src="index.js"></script>
+    <script type="module" src="segmentation.js"></script>
 </body>
 </html>
