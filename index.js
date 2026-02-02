@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 2. Load sample images after hero images
-    const sampleImageUrls = [
-        '/imgs/9b_2_old_lin.jpg',
-        '/imgs/9b_2_old_composite.jpg',
-        '/imgs/9b_2_old_texture.jpg',
-        '/imgs/9b_2_old_segmentation_map.png'
-    ];
+    // const sampleImageUrls = [
+    //     '/imgs/9b_2_old_lin.jpg',
+    //     '/imgs/9b_2_old_composite.jpg',
+    //     '/imgs/9b_2_old_texture.jpg',
+    //     '/imgs/9b_2_old_segmentation_map.png'
+    // ];
     
 
     // Native lazy loading for team profile images
@@ -79,25 +79,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Now start the loading sequence
     Promise.all(heroPreloads)
-        .then(() => {
-            console.log('Hero images loaded successfully');
-            imageLoadTracker.hero = true;
+        // .then(() => {
+        //     console.log('Hero images loaded successfully');
+        //     imageLoadTracker.hero = true;
             
-            // Now load sample images
-            const samplesLoading = document.getElementById('samples-loading');
+        //     // Now load sample images
+        //     const samplesLoading = document.getElementById('samples-loading');
             
-            // Create image objects to preload sample images
-            const samplePreloads = sampleImageUrls.map(url => {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.src = url;
-                    img.onload = () => resolve(url);
-                    img.onerror = () => reject(url);
-                });
-            });
+        //     // Create image objects to preload sample images
+        //     const samplePreloads = sampleImageUrls.map(url => {
+        //         return new Promise((resolve, reject) => {
+        //             const img = new Image();
+        //             img.src = url;
+        //             img.onload = () => resolve(url);
+        //             img.onerror = () => reject(url);
+        //         });
+        //     });
             
-            return Promise.all(samplePreloads);
-        })
+        //     return Promise.all(samplePreloads);
+        // })
         .then(() => {
             console.log('Sample images loaded successfully');
             imageLoadTracker.samples = true;
