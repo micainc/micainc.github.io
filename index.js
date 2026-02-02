@@ -72,14 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
 
-    // 3. Add lazy loading to team profile images
+    // Native lazy loading for team profile images
     document.querySelectorAll('.profile img').forEach(img => {
         img.setAttribute('loading', 'lazy');
-        
-        // Store original src and set a placeholder
-        const originalSrc = img.getAttribute('src');
-        img.setAttribute('data-src', originalSrc);
-        img.setAttribute('src', 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E');
     });
 
     // Now start the loading sequence
@@ -108,14 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             imageLoadTracker.samples = true;
             
             updateSlideLayout();
-            
-            // Start loading team images
-            document.querySelectorAll('.profile img').forEach(img => {
-                const originalSrc = img.getAttribute('data-src');
-                if (originalSrc) {
-                    img.setAttribute('src', originalSrc);
-                }
-            });
         })
         .catch(errorUrl => {
             console.error('Failed to load image:', errorUrl);
