@@ -22,8 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hidden canvas for sampling pixel colors from the segmentation map
     const segHidden = document.createElement('canvas');
-    const segHiddenCtx = segHidden.getContext('2d');
+    segHidden.style.imageRendering = '-webkit-optimize-contrast'; /* Safari */
+    segHidden.style.imageRendering = 'crisp-edges';             /* Firefox */
+    segHidden.style.imageRendering = 'pixelated';               /* Chrome */ 
+    // segHidden.style.zIndex = 1;
+    // segHidden.style.pointerEvents = 'none';
+    // heroBg.appendChild(segHidden)
 
+    const segHiddenCtx = segHidden.getContext('2d');
     // Hidden canvas for xpol_ref scaled to cover dimensions
     const xpolRefCanvas = document.createElement('canvas');
     const xpolRefCtx = xpolRefCanvas.getContext('2d');
@@ -39,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastMouseY = 0;
     let lastClientX = 0;
     let lastClientY = 0;
+    let currentPortrait = false;
 
     // --- Grain outline system ---
     // Canvas for grain outline + leader line + label (on top of seg overlays)
@@ -51,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     grainCanvas.style.pointerEvents = 'none';
     grainCanvas.style.zIndex = '3';
     grainCanvas.style.imageRendering = 'pixelated';
+    grainCanvas.imageSmoothingEnabled = 'false';
     // grainCanvas.style.mixBlendMode = 'difference';
     heroBg.appendChild(grainCanvas);
     const grainCtx = grainCanvas.getContext('2d');
@@ -83,10 +91,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const IDLE_DELAY = 200; // ms of no movement before showing line + label
     let selectedMineralHex = null;
 
-    // Load the segmentation map from embedded base64 data
+    // Load the segmentation map from embedded base64 data.
+    // Native pixel data is captured at 1:1 so we can do nearest-neighbor scaling
+    // in JS — Safari doesn't respect imageSmoothingEnabled=false in drawImage.
+    let nativeSegData = null;
+    let nativeSegW = 0, nativeSegH = 0;
     const segImg = new Image();
     segImg.src = SEG_MAP_DATA_URL;
     segImg.onload = function() {
+        const nc = document.createElement('canvas');
+        nc.width = segImg.naturalWidth;
+        nc.height = segImg.naturalHeight;
+        const nctx = nc.getContext('2d');
+        nctx.drawImage(segImg, 0, 0); // 1:1, no scaling
+        nativeSegData = nctx.getImageData(0, 0, nc.width, nc.height);
+        nativeSegW = nc.width;
+        nativeSegH = nc.height;
+
         resizeSegCanvases();
         window.addEventListener('resize', resizeSegCanvases);
         tryPrecompute();
@@ -122,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // When rotate=true, draws the image rotated 90° CW to better fill portrait containers.
     function drawCover(ctx, img, cw, ch, rotate) {
         ctx.imageSmoothingEnabled = false;
+        ctx.webkitImageSmoothingEnabled = false;
         ctx.clearRect(0, 0, cw, ch);
 
         if (rotate) {
@@ -160,21 +182,91 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Manual nearest-neighbor scaling of the seg map from native resolution to display resolution.
+    // Bypasses browser drawImage which Safari interpolates even with imageSmoothingEnabled=false.
+    function buildSegMapData(w, h, portrait) {
+        const imgW = nativeSegW;
+        const imgH = nativeSegH;
+        const imgAspect = imgW / imgH;
+        const src = nativeSegData.data;
+        const out = new ImageData(w, h);
+        const dst = out.data;
+
+        if (portrait) {
+            // Rotated 90° CW cover: drawing area is h wide × w tall
+            const areaAspect = h / w;
+            let dw, dh;
+            if (areaAspect > imgAspect) { dw = h; dh = h / imgAspect; }
+            else                        { dh = w; dw = w * imgAspect; }
+
+            for (let py = 0; py < h; py++) {
+                for (let px = 0; px < w; px++) {
+                    // Reverse the translate(cw/2,ch/2) + rotate(90°) transform
+                    const a = py - h / 2;
+                    const b = w / 2 - px;
+                    const srcX = Math.floor((a + dw / 2) / dw * imgW);
+                    const srcY = Math.floor((b + dh / 2) / dh * imgH);
+                    if (srcX >= 0 && srcX < imgW && srcY >= 0 && srcY < imgH) {
+                        const oi = (py * w + px) * 4;
+                        const si = (srcY * imgW + srcX) * 4;
+                        dst[oi]     = src[si];
+                        dst[oi + 1] = src[si + 1];
+                        dst[oi + 2] = src[si + 2];
+                        dst[oi + 3] = src[si + 3];
+                    }
+                }
+            }
+        } else {
+            // Standard cover
+            const containerAspect = w / h;
+            let dx, dy, dw, dh;
+            if (containerAspect > imgAspect) { dw = w; dh = w / imgAspect; dx = 0; dy = (h - dh) / 2; }
+            else                             { dh = h; dw = h * imgAspect; dx = (w - dw) / 2; dy = 0; }
+
+            for (let py = 0; py < h; py++) {
+                for (let px = 0; px < w; px++) {
+                    const srcX = Math.floor((px - dx) / dw * imgW);
+                    const srcY = Math.floor((py - dy) / dh * imgH);
+                    if (srcX >= 0 && srcX < imgW && srcY >= 0 && srcY < imgH) {
+                        const oi = (py * w + px) * 4;
+                        const si = (srcY * imgW + srcX) * 4;
+                        dst[oi]     = src[si];
+                        dst[oi + 1] = src[si + 1];
+                        dst[oi + 2] = src[si + 2];
+                        dst[oi + 3] = src[si + 3];
+                    }
+                }
+            }
+        }
+
+        return out;
+    }
+
     function resizeSegCanvases() {
+        console.log("RESIZING CANVAS")
         const w = heroBg.offsetWidth;
         const h = heroBg.offsetHeight;
         const portrait = w < h;
 
-        canvasA.width = w;  canvasA.height = h;
-        canvasB.width = w;  canvasB.height = h;
+        const dpr = window.devicePixelRatio || 1;
+        currentPortrait = portrait;
+
+        // Overlay canvases: scale by dpr for retina crispness
+        canvasA.width = w * dpr;  canvasA.height = h * dpr;
+        canvasB.width = w * dpr;  canvasB.height = h * dpr;
+        ctxA.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctxB.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // Grain canvas: also dpr-scaled
+        grainCanvas.width = w * dpr;
+        grainCanvas.height = h * dpr;
+        grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // Data canvases: stay at logical resolution for pixel lookups
         segHidden.width = w;
         segHidden.height = h;
         xpolRefCanvas.width = w;
         xpolRefCanvas.height = h;
-        const dpr = window.devicePixelRatio || 1;
-        grainCanvas.width = w * dpr;
-        grainCanvas.height = h * dpr;
-        grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ppolCanvas.width = w;
         ppolCanvas.height = h;
 
@@ -196,9 +288,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Draw segmentation map scaled to match the CSS cover/center of the bg images
-        drawCover(segHiddenCtx, segImg, w, h, portrait);
-        segImageData = segHiddenCtx.getImageData(0, 0, w, h);
+        // Seg map: manual nearest-neighbor scaling (bypasses Safari drawImage interpolation bug)
+        if (nativeSegData) {
+            segImageData = buildSegMapData(w, h, portrait);
+            segHiddenCtx.putImageData(segImageData, 0, 0);
+        } else {
+            drawCover(segHiddenCtx, segImg, w, h, portrait);
+            segImageData = segHiddenCtx.getImageData(0, 0, w, h);
+        }
 
         // Draw xpol_ref scaled to match
         if (xpolRefLoaded) {
@@ -291,9 +388,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawSegMask(ctx, w, h, maskCanvas) {
         ctx.clearRect(0, 0, w, h);
         ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(xpolRefCanvas, 0, 0);
+        // Draw source image directly for full dpr resolution (not from 1x xpolRefCanvas)
+        drawCover(ctx, xpolRefImg, w, h, currentPortrait);
         ctx.globalCompositeOperation = 'destination-in';
-        ctx.drawImage(maskCanvas, 0, 0);
+        ctx.drawImage(maskCanvas, 0, 0, w, h);
         ctx.globalCompositeOperation = 'source-over';
     }
 
@@ -303,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (precomputed) return;
         if (!segImageData || !xpolRefLoaded || !ppolLoaded) return;
         if (segHidden.width === 0) return;
-
+        // console.log("PRECOMPUTING...")
         xpolImageData = xpolRefCtx.getImageData(0, 0, segHidden.width, segHidden.height);
         ppolImageData = ppolCtx.getImageData(0, 0, segHidden.width, segHidden.height);
 
@@ -545,12 +643,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Find grain pixels: all mineral pixels within threshold in 8D (6 color + 2 spatial)
     function findGrain(hex, cx, cy) {
         const md = mineralData[hex];
+        // console.log("MD: ", md)
+
         if (!md) return null;
 
         let cc = sampleCursorColor(hex, cx, cy);
+        // console.log("CURSOR COLOUR: ", cc)
+
         if (!cc) return null;
 
-
+        // console.log("FINDING GRAIN")
         const n = md.count;
         const cScaleSq = GRAIN_COLOR_SCALE * GRAIN_COLOR_SCALE;
         const sScaleSq = GRAIN_SPATIAL_SCALE * GRAIN_SPATIAL_SCALE;
@@ -574,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const spatialDistSq = (dx * dx + dy * dy) / sScaleSq;
 
             // Combined distance (weighted sum of squares)
-            const combinedSq = 0.9 * colorDistSq + 0.1 * spatialDistSq;
+            const combinedSq = 0.8 * colorDistSq + 0.2 * spatialDistSq;
             if (combinedSq < threshSq) {
                 grainIndices.push(j);
             }
@@ -650,6 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearGrainOverlay() {
+        // console.log("CLEAR GRAIN OVERLAY")
         grainAnimId++;
         grainCtx.clearRect(0, 0, grainCanvas.width, grainCanvas.height);
         lastGrainHex = null;
@@ -677,8 +780,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!maskCache[hex]) {
             maskCache[hex] = buildMask(r, g, b);
         }
-        const w = back.canvas.width;
-        const h = back.canvas.height;
+        const w = heroBg.offsetWidth;
+        const h = heroBg.offsetHeight;
         drawSegMask(back.ctx, w, h, maskCache[hex]);
         back.canvas.style.opacity = '1';
         front.canvas.style.opacity = '0';
@@ -732,6 +835,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const grainIndices = findGrain(hex, cx, cy);
         if (!grainIndices || grainIndices.length < 5) {
+            // console.log("GRAIN INDICES: ", grainIndices)
             clearGrainOverlay();
             lastGrainHex = hex; // keep tracking mineral even if no grain found
             return;
@@ -868,6 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
         front.canvas.style.opacity = '0';
         back.canvas.style.opacity = '0';
         segLabel.style.opacity = '0';
+        // console.log("CLEAR SEG OVERLAY")
         clearGrainOverlay();
         resetLegend();
     }
@@ -883,10 +988,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const color = getSegPixel(px, py);
 
-        if (color.a < 128) { clearSegOverlay(); return; }
+        if (color.a < 128) {
+            // console.log("COLOR: ", color)
+            clearSegOverlay(); 
+            return; 
+    
+        }
         const hex = rgbToHex(color.r, color.g, color.b);
         const mineral = labelColours[hex];
-        if (!mineral || mineral === 'undefined') { clearSegOverlay(); return; }
+        if (!mineral || mineral === 'undefined') { 
+            // console.log("MINERAL: ", mineral)
+            clearSegOverlay(); 
+            return; 
+        }
 
         highlightLegend(hex);
 
@@ -922,8 +1036,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Draw new mask on the back canvas, then crossfade
-        const w = back.canvas.width;
-        const h = back.canvas.height;
+        const w = heroBg.offsetWidth;
+        const h = heroBg.offsetHeight;
         drawSegMask(back.ctx, w, h, maskCache[hex]);
 
         back.canvas.style.opacity = '1';   // fade in new
