@@ -431,6 +431,7 @@ a:hover {
     display: flex;
     flex-direction:column;
     gap: 16px;
+    height:min-content;
 }
 
 .about-text p {

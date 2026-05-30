@@ -530,7 +530,7 @@ function generateGrains() {
     // (svg.clientHeight is unreliable before viewBox is set.)
     const textEl = document.querySelector('.about-text');
     const availW = svg.clientWidth || (svg.parentElement ? svg.parentElement.clientWidth / 2 : 600);
-    const availH = svg.clientHeight ?? (textEl ? textEl.clientHeight : availW);
+    const availH = textEl.clientHeight;
 
     const cols = Math.max(1, Math.floor(availW / GRAIN_FRAME_SIZE));
     const rows = Math.max(1, Math.floor(availH / GRAIN_FRAME_SIZE));
@@ -631,7 +631,7 @@ function generateGrains() {
     grains.forEach((g, idx) => {
         const { points, rotation, majorRadius } = generateGrainPolygon(g.radius, g.cfg);
         const polyStr = points.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
-        const delay = idx * 35;
+        const delay = idx * 50;
         const fillAttr = g.cfg.fill === 'none' ? 'transparent' : g.cfg.fill;
 
         let bodyMarkup = `<polygon points="${polyStr}" fill="${fillAttr}" stroke="${g.cfg.color}" stroke-width="${g.cfg.stroke}" stroke-linejoin="round"/>`;
