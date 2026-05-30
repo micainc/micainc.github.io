@@ -523,6 +523,7 @@ const UM2_PER_VB2 = 25;
 
 function generateGrains() {
     const svg = document.querySelector('.grains-svg');
+    const about = document.getElementById('about')
     if (!svg) return;
 
     // Use sibling text block's height as the available vertical space so the
@@ -530,7 +531,7 @@ function generateGrains() {
     // (svg.clientHeight is unreliable before viewBox is set.)
     const textEl = document.querySelector('.about-text');
     const availW = svg.clientWidth || (svg.parentElement ? svg.parentElement.clientWidth / 2 : 600);
-    const availH = textEl.clientHeight;
+    const availH = about.clientWidth < 1024 ? 128 : textEl.clientHeight;
 
     const cols = Math.max(1, Math.floor(availW / GRAIN_FRAME_SIZE));
     const rows = Math.max(1, Math.floor(availH / GRAIN_FRAME_SIZE));
@@ -670,7 +671,7 @@ function generateGrains() {
         // of the cell translate and the labels.
         body += `<g class="grain" transform="translate(${g.cx},${g.cy})" style="transition-delay:${delay}ms">${hoverRect}<g class="grain-body">${bodyMarkup}</g>${indexMarkup}${labelMarkup}</g>`;
     });
-
+    console.log("FLAG")
     svg.innerHTML = `<defs>${defs}</defs>${body}`;
 }
 

@@ -431,6 +431,7 @@ a:hover {
     display: flex;
     flex-direction:column;
     gap: 16px;
+    width: fit-content;
     height:min-content;
 }
 
