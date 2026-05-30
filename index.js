@@ -671,7 +671,6 @@ function generateGrains() {
         // of the cell translate and the labels.
         body += `<g class="grain" transform="translate(${g.cx},${g.cy})" style="transition-delay:${delay}ms">${hoverRect}<g class="grain-body">${bodyMarkup}</g>${indexMarkup}${labelMarkup}</g>`;
     });
-    console.log("FLAG")
     svg.innerHTML = `<defs>${defs}</defs>${body}`;
 }
 
