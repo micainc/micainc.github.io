@@ -415,26 +415,72 @@ a:hover {
    ABOUT SECTION
    ============================================ */
 
-#about-section {
+#about {
     display: flex;
     flex-direction: column;
 }
 
-#about-content {
+.about-content {
     display: flex;
     flex-direction: row;
-    gap: 48px;
+    gap:48px;
 }
 
-.about-section-left {
+.about-text {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction:column;
     gap: 16px;
 }
 
-.about-section-left p {
+.about-text p {
     font-size: 18px;
+}
+
+.grains-svg {
+    display: flex;
+    flex: 1;
+    /* width: 100%; */
+    height: auto;
+    /* display: block; */
+    /* overflow: visible; */
+}
+
+.grain {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    cursor:pointer;
+}
+
+/* Scale the polygon + fabric independently of the cell translate and the
+   frame label. Adjust the scale to taste. */
+.grain-body {
+    transform: scale(0.875);
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+/* Hover detail swap (pure CSS).
+   - .grain-hit is a transparent rect covering the whole frame cell — it's
+     the hover target so :hover triggers anywhere in the cell.
+   - .grain-index (just the index number) is visible by default.
+   - .grain-label (the 3-line class/area/angle block) fades in on hover. */
+.grain-index,
+.grain-label {
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+    text-shadow: -1px 1px black,
+                1px -1px black,
+                -1px -1px black,
+                1px 1px black;
+}
+.grain-label { opacity: 0; }
+.grain-index { opacity: 1; }
+.grain:hover .grain-index { opacity: 0; }
+.grain:hover .grain-label { opacity: 1; }
+
+#about.visible .grain {
+    opacity: 1;
 }
 
 /* ============================================
@@ -1157,6 +1203,15 @@ a:hover {
 
     .about-section-left p {
         font-size: 14px;
+    }
+
+    .about-content {
+        flex-direction: column;
+        gap: 48px;
+    }
+
+    .about-demo {
+        width: 100%;
     }
 
     .section {
